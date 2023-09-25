@@ -1,3 +1,7 @@
+var reference = document.getElementById("userscom-chat").getAttribute("data-reference");
+var image = document.getElementById("userscom-chat").getAttribute("data-image");
+console.log('image...', image)
+
 // Define the custom element tag
 function ChatBox() {
   // Create styles
@@ -5,16 +9,17 @@ function ChatBox() {
   style.textContent = `
     /* Your styles go here */
     .open-button {
-      background-color: #555;
+      background-color: white;
       color: white;
-      padding: 16px 20px;
+      padding: 16px;
       border: none;
       cursor: pointer;
       opacity: 0.8;
       position: fixed;
       bottom: 23px;
       right: 28px;
-      width: 280px;
+      width: 100px;
+      border-radius: 50%;
     }
 
     /* The popup chat - hidden by default */
@@ -76,9 +81,9 @@ function ChatBox() {
   document.head.appendChild(style);
 
   // Create chat button
-  var openButton = document.createElement("button");
-  openButton.className = "open-button";
-  openButton.textContent = "Chat";
+  var img = document.createElement("img");
+  img.src= image;
+  img.className = "open-button";
 
   // Create chat popup
   var chatPopup = document.createElement("div");
@@ -126,11 +131,11 @@ function ChatBox() {
   chatPopup.appendChild(form);
 
   // Append chat button and chat popup to the body
-  document.body.appendChild(openButton);
+  document.body.appendChild(img);
   document.body.appendChild(chatPopup);
 
   // Add event listeners
-  openButton.addEventListener("click", function () {
+  img.addEventListener("click", function () {
     chatPopup.style.display = "block";
   });
 
