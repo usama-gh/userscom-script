@@ -143,11 +143,10 @@ function ChatBox() {
   }
 
   #overlaySuccess {
-    display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
-    display: flex;
+    display: none;
     width: 100%;
     inset: 0px;
     transition: 0.3s;
