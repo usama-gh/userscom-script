@@ -90,10 +90,10 @@ function ChatBox() {
     }
 
     #drop-area {
-      border-radius: 12px;
-      border: 2px dashed #ccc;
-      padding: 20px;
-      text-align: center;
+      // border-radius: 12px;
+      // border: 2px dashed #ccc;
+      // padding: 20px;
+      // text-align: center;
   }
 
   #image-preview {
@@ -126,11 +126,22 @@ function ChatBox() {
   }
 
   .imagePicker {
-    font-size: 10px;
+    font-size: 1px;
     position: absolute;
     opacity: 0;
     cursor: pointer;
+    top: 80px;
+    right: 20px;
+    width: 20px !important;
   }
+
+  .attachmentContainer svg {
+    width: 20px;
+    right: 30px;
+    position: absolute;
+    top: 90px;
+  }
+
   `;
   document.head.appendChild(style);
 
@@ -176,14 +187,17 @@ function ChatBox() {
   inputFile.name = 'attachment';
   inputFile.className = 'imagePicker';
 
-  // Create the label element
-  const label = document.createElement('label');
-  label.htmlFor = 'fileInput';
-  label.textContent = 'Upload Attachments';
+  const attachmentContainer = document.createElement('div');
+  attachmentContainer.className = 'attachmentContainer';
+  attachmentContainer.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+    </svg>
+  `;
 
   // Append the input and label elements to the shadow root
-  dropArea.appendChild(inputFile);
-  dropArea.appendChild(label);
+  attachmentContainer.appendChild(inputFile);
+  form.appendChild(attachmentContainer);
 
   // Create send button
   var sendButton = document.createElement("button");
@@ -198,9 +212,9 @@ function ChatBox() {
 
   // Append elements to form
   form.appendChild(textarea);
+  form.appendChild(dropArea);
   form.appendChild(nameInput);
   form.appendChild(emailInput);
-  form.appendChild(dropArea);
   form.appendChild(sendButton);
   form.appendChild(closeButton);
 
