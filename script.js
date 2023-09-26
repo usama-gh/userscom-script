@@ -1,5 +1,6 @@
 var reference = document.getElementById("userscom-chat").getAttribute("data-reference");
-var image = document.getElementById("userscom-chat").getAttribute("data-image");
+// var image = document.getElementById("userscom-chat").getAttribute("data-image");
+var image = "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png";
 console.log('image...', image)
 
 // Define the custom element tag
@@ -47,7 +48,16 @@ function ChatBox() {
       border: none;
       background: #f1f1f1;
       resize: none;
-      min-height: 200px;
+      min-height: 100px;
+    }
+
+    .form-container input {
+      width: 50%;
+      padding: 15px;
+      margin: 5px 0 22px 0;
+      border: none;
+      background: #f1f1f1;
+      resize: none;
     }
 
     /* When the textarea gets focus, do something */
@@ -71,6 +81,9 @@ function ChatBox() {
     /* Add a red background color to the cancel button */
     .form-container .cancel {
       background-color: red;
+      width: 70px;
+      float: right;
+      cursor: pointer;
     }
 
     /* Add some hover effects to buttons */
@@ -91,22 +104,25 @@ function ChatBox() {
 
   // Create form
   var form = document.createElement("form");
-  form.action = "/action_page.php";
   form.className = "form-container";
-
-  // Create heading
-  var heading = document.createElement("h1");
-  heading.textContent = "Chat";
-
-  // Create label for message input
-  var label = document.createElement("label");
-  label.textContent = "Message";
 
   // Create textarea for message input
   var textarea = document.createElement("textarea");
   textarea.placeholder = "Type message..";
-  textarea.name = "msg";
+  textarea.name = "message";
   textarea.required = true;
+
+  var nameInput = document.createElement("input");
+  nameInput.type = "text";
+  nameInput.placeholder = "Name";
+  nameInput.name = "name";
+
+  // Create an input field for the email
+  var emailInput = document.createElement("input");
+  emailInput.type = "text";
+  emailInput.placeholder = "Email";
+  emailInput.name = "email";
+  emailInput.required = true;
 
   // Create send button
   var sendButton = document.createElement("button");
@@ -115,15 +131,14 @@ function ChatBox() {
   sendButton.textContent = "Send";
 
   // Create close button
-  var closeButton = document.createElement("button");
-  closeButton.type = "button";
-  closeButton.className = "btn cancel";
-  closeButton.textContent = "Close";
+  var closeButton = document.createElement("img");
+  closeButton.src = image;
+  closeButton.className = "cancel";
 
   // Append elements to form
-  form.appendChild(heading);
-  form.appendChild(label);
   form.appendChild(textarea);
+  form.appendChild(nameInput);
+  form.appendChild(emailInput);
   form.appendChild(sendButton);
   form.appendChild(closeButton);
 
@@ -142,6 +157,30 @@ function ChatBox() {
   closeButton.addEventListener("click", function () {
     chatPopup.style.display = "none";
   });
+
+  let userAttributes = {};
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    if(userAttributes)
+    {
+      formData.append('user_attributes', JSON.stringify(userAttributes))
+    }
+
+    fetch("http://127.0.0.1:8000/add/ticket/"+reference, {
+            method: 'POST',
+            body: formData,
+        }).then((response) => {
+          console.log('response...', response)
+        })
+  });
+
+  document.addEventListener('updateUserAttributes', (event) => {
+    userAttributes = event.detail;
+    console.log('userAttributes...', userAttributes)
+  });
+
+  
 }
 
 // Automatically add chat component when the page is completely loaded
@@ -150,3 +189,17 @@ document.addEventListener("DOMContentLoaded", function () {
     ChatBox();
   }
 });
+const userscom = {
+  user: {
+    set(options) {
+      if (options) {
+        Object.assign(this, options);
+        console.log('User properties updated:', this);
+        const event = new CustomEvent('updateUserAttributes', { detail: this });
+        document.dispatchEvent(event);
+      } else {
+        console.error('No options provided');
+      }
+    }
+  }
+}
