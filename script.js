@@ -142,6 +142,59 @@ function ChatBox() {
     top: 90px;
   }
 
+  #overlaySuccess {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    display: flex;
+    width: 100%;
+    inset: 0px;
+    transition: 0.3s;
+    background: linear-gradient(90deg, #90A4AE 0%, #CFD8DC 100%);
+    z-index: 2;
+    cursor: pointer;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  #successTextHeading {
+    color: #8BB593;
+     font-size: 42px;
+    font-family: 'Inter', sans-serif;
+    margin-top: 5px;
+     letter-spacing:-2px;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  #successTextSubtitle
+  {
+    font-size: 14px;
+    color: #8BB593;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    text-align: center
+  }
+
+  #successButton{
+    border: solid 1px #8BB593;
+    background-color: transparent;
+    border-radius: 20px;
+    color: #8BB593;
+    padding: 5px 10px;
+    margin: auto;
+    cursor: pointer;
+  }
+
+  .successIconContainer{
+    width: 50px;
+    margin: auto;
+  }
+
   `;
   document.head.appendChild(style);
 
@@ -218,6 +271,38 @@ function ChatBox() {
   form.appendChild(sendButton);
   form.appendChild(closeButton);
 
+  const overlaySuccessDiv = document.createElement('div');
+  overlaySuccessDiv.id = 'overlaySuccess';
+  const overlaySuccessDivText = document.createElement('div');
+  overlaySuccessDivText.id = 'text';
+
+  var successIcon = document.createElement("div");
+  successIcon.className = "successIconContainer";
+    successIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+  `;
+
+  overlaySuccessDivText.appendChild(successIcon);
+
+  var successTextHeading = document.createElement("h6");
+  successTextHeading.id = "successTextHeading";
+  successTextHeading.textContent = "Sent";
+  overlaySuccessDivText.appendChild(successTextHeading);
+
+  var successTextSubtitle = document.createElement("h6");
+  successTextSubtitle.id = "successTextSubtitle";
+  successTextSubtitle.textContent = "You will hear back from us soon";
+  overlaySuccessDivText.appendChild(successTextSubtitle);
+
+  var successButton = document.createElement("button");
+  successButton.id = "successButton";
+  successButton.textContent = "← Send another";
+  overlaySuccessDivText.appendChild(successButton);
+  
+  overlaySuccessDiv.appendChild(overlaySuccessDivText);
+  chatPopup.appendChild(overlaySuccessDiv);
+
   // Append form to chat popup
   chatPopup.appendChild(form);
 
@@ -232,6 +317,14 @@ function ChatBox() {
 
   closeButton.addEventListener("click", function () {
     chatPopup.style.display = "none";
+  });
+
+  var successButton = chatPopup.querySelector("#successButton");
+  successButton.addEventListener("click", function () {
+    var overlayDivSuccess = chatPopup.querySelector("#overlaySuccess");
+    if (overlayDivSuccess) {
+      overlayDivSuccess.style.display = "none";
+    }
   });
 
   let userAttributes = {};
@@ -253,7 +346,7 @@ function ChatBox() {
             method: 'POST',
             body: formData,
         }).then((response) => {
-          console.log('response...', response)
+          chatPopup.querySelector("#overlaySuccess").style.display = "flex";
         })
   });
 
