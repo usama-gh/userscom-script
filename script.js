@@ -292,7 +292,7 @@ function ChatBox() {
             handleFile(file);
         });
 
-        document.addEventListener("paste", (e) => {
+        form.addEventListener("paste", (e) => {
             const items = e.clipboardData.items;
 
             for (let i = 0; i < items.length; i++) {
