@@ -1,7 +1,6 @@
 var reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 // var image = document.getElementById("userscom-chat").getAttribute("data-image");
 var image = "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png";
-console.log('image...', image)
 
 // Define the custom element tag
 function ChatBox() {
@@ -29,7 +28,6 @@ function ChatBox() {
       position: fixed;
       bottom: 0;
       right: 15px;
-      border: 3px solid #f1f1f1;
       z-index: 9;
     }
 
@@ -90,6 +88,49 @@ function ChatBox() {
     .form-container .btn:hover, .open-button:hover {
       opacity: 1;
     }
+
+    #drop-area {
+      border-radius: 12px;
+      border: 2px dashed #ccc;
+      padding: 20px;
+      text-align: center;
+  }
+
+  #image-preview {
+    height: 100px;
+    width: 200px;
+  }
+
+  #image-preview img{
+    height: 100px
+  }
+
+  #image-preview #iconContainer
+  {
+    right: 20px;
+  }
+
+  #extensionDiv {
+    background: lightgray;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+  }
+
+  #iconContainer {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    right: 30px;
+    position: absolute;
+  }
+
+  .imagePicker {
+    font-size: 10px;
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
   `;
   document.head.appendChild(style);
 
@@ -124,6 +165,26 @@ function ChatBox() {
   emailInput.name = "email";
   emailInput.required = true;
 
+  // Drop Area
+  const dropArea = document.createElement('div');
+  dropArea.id = "drop-area";
+
+  // Create the input element
+  const inputFile = document.createElement('input');
+  inputFile.type = 'file';
+  inputFile.id = 'fileInput';
+  inputFile.name = 'attachment';
+  inputFile.className = 'imagePicker';
+
+  // Create the label element
+  const label = document.createElement('label');
+  label.htmlFor = 'fileInput';
+  label.textContent = 'Upload Attachments';
+
+  // Append the input and label elements to the shadow root
+  dropArea.appendChild(inputFile);
+  dropArea.appendChild(label);
+
   // Create send button
   var sendButton = document.createElement("button");
   sendButton.type = "submit";
@@ -139,6 +200,7 @@ function ChatBox() {
   form.appendChild(textarea);
   form.appendChild(nameInput);
   form.appendChild(emailInput);
+  form.appendChild(dropArea);
   form.appendChild(sendButton);
   form.appendChild(closeButton);
 
@@ -162,6 +224,12 @@ function ChatBox() {
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     const formData = new FormData(form);
+    const fileInput = form.querySelector('#fileInput');
+    const file = fileInput ? fileInput.files[0] : null;
+    if (file) {
+        formData.append('attachment', file);
+    }
+
     if(userAttributes)
     {
       formData.append('user_attributes', JSON.stringify(userAttributes))
@@ -180,7 +248,127 @@ function ChatBox() {
     console.log('userAttributes...', userAttributes)
   });
 
-  
+  const dropAreaDiv = form.querySelector("#drop-area");
+        const fileInput = form.querySelector("#fileInput");
+        
+        dropAreaDiv.addEventListener("dragenter", (e) => {
+            e.preventDefault();
+            dropAreaDiv.classList.add("dragging");
+        });
+
+        dropAreaDiv.addEventListener("dragover", (e) => {
+            e.preventDefault();
+        });
+
+        dropAreaDiv.addEventListener("dragleave", () => {
+            dropAreaDiv.classList.remove("dragging");
+        });
+
+        dropAreaDiv.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropAreaDiv.classList.remove("dragging");
+
+            const file = e.dataTransfer.files[0];
+            handleFile(file);
+        });
+
+        fileInput.addEventListener("change", (e) => {
+          console.log('file change')
+            const file = e.target.files[0];
+            handleFile(file);
+        });
+
+        document.addEventListener("paste", (e) => {
+            const items = e.clipboardData.items;
+
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf("image") !== -1) {
+                    const file = items[i].getAsFile();
+                    handleFile(file);
+                    break; 
+                }
+            }
+        });
+
+        function handleFile(file) {
+          const fileExtension = file.name.split('.').pop();
+          const existingExtensionDiv = form.querySelector("#extensionDiv");
+          if (existingExtensionDiv) {
+            existingExtensionDiv.remove();
+          }
+          
+          const previewImage = form.querySelector("#image-preview");
+          if (previewImage) {
+            previewImage.remove();
+          }
+            const reader = new FileReader();
+            if (file && file.type.startsWith("image/")) {
+                reader.onload = (event) => {
+                  const image = new Image();
+                  image.src = event.target.result;
+                  const imagePreview = document.createElement("div");
+                  imagePreview.id = "image-preview";
+                  const imgElement = document.createElement("img");
+                  imgElement.id = "imgElement";
+                  imgElement.src = event.target.result;
+
+                  const iconContainer = document.createElement('div');
+                  iconContainer.id = "iconContainer";
+                  iconContainer.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+                  imagePreview.appendChild(iconContainer);
+                  imagePreview.appendChild(imgElement);
+                  dropArea.appendChild(imagePreview);
+
+                  iconContainer.addEventListener("click", (e) => {
+                    const fileInput = form.querySelector('#fileInput');
+                    if (fileInput) {
+                      fileInput.value = '';
+                    }
+                    const extensionDiv = form.querySelector('#extensionDiv');
+                    if (extensionDiv) {
+                      extensionDiv.innerHTML = '';
+                    }
+                    const imagePreview = form.querySelector('#image-preview');
+                    if(imagePreview)
+                    {
+                      imagePreview.remove();
+                    }
+                  });
+                };
+                reader.readAsDataURL(file);
+
+                
+
+            } else {
+                const extensionDiv = document.createElement('div');
+                extensionDiv.id = "extensionDiv";
+                const iconContainer = document.createElement('div');
+                iconContainer.id = "iconContainer";
+                const text = document.createElement('h3');
+                text.textContent = fileExtension;
+                iconContainer.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+                extensionDiv.appendChild(iconContainer);
+                extensionDiv.appendChild(text);
+                dropArea.appendChild(extensionDiv);
+                reader.readAsDataURL(file);
+
+                iconContainer.addEventListener("click", (e) => {
+                const fileInput = form.querySelector('#fileInput');
+                if (fileInput) {
+                  fileInput.value = '';
+                }
+                const extensionDiv = form.querySelector('#extensionDiv');
+                if (extensionDiv) {
+                  extensionDiv.innerHTML = '';
+                }
+                const imagePreview = form.querySelector('#imagePreview');
+                if(imagePreview)
+                {
+                  imagePreview.innerHTML = "";
+                }
+              });
+            }
+          }
 }
 
 // Automatically add chat component when the page is completely loaded
@@ -189,6 +377,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ChatBox();
   }
 });
+
 const userscom = {
   user: {
     set(options) {
