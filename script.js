@@ -5,8 +5,7 @@ var image = "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-com
 // Define the custom element tag
 function ChatBox() {
   // Create styles
-  var style = document.createElement("style");
-  style.textContent = `
+  const styles = `
     /* Your styles go here */
     .open-button {
       background-color: white;
@@ -195,8 +194,15 @@ function ChatBox() {
   }
 
   `;
-  document.head.appendChild(style);
+  
+  var parentDiv = document.createElement('div');
+  document.body.append(parentDiv);
+  const userscomRoot = parentDiv.attachShadow({ mode: 'open' });
 
+  const styleSheet = new CSSStyleSheet();
+  styleSheet.replaceSync(styles);
+  userscomRoot.adoptedStyleSheets = [styleSheet];
+  
   // Create chat button
   var img = document.createElement("img");
   img.src= image;
@@ -306,8 +312,11 @@ function ChatBox() {
   chatPopup.appendChild(form);
 
   // Append chat button and chat popup to the body
-  document.body.appendChild(img);
-  document.body.appendChild(chatPopup);
+  userscomRoot.appendChild(img);
+  userscomRoot.appendChild(chatPopup);
+  // userscomRoot.appendChild(parentDiv);
+  // document.body.appendChild(img);
+  // document.body.appendChild(chatPopup);
 
   // Add event listeners
   img.addEventListener("click", function () {
