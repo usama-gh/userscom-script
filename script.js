@@ -1,5 +1,7 @@
-var reference = document.getElementById("userscom-chat").getAttribute("data-reference");
-var image = document.getElementById("userscom-chat").getAttribute("data-image");
+const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
+const image = document.getElementById("userscom-chat").getAttribute("data-image");
+var welcomeText = document.getElementById("userscom-chat").getAttribute("welcome-text");
+const position = document.getElementById("userscom-chat").getAttribute("position");
 // var image = "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg";
 
 // Define the custom element tag
@@ -10,7 +12,7 @@ function ChatBox() {
   @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
     /* Your styles go here */
     .open-button {
-      background-color: #ffffff75;
+      background-color: #ffffffcc;
       color: white;
       padding: 7px;
       border: none;
@@ -19,14 +21,27 @@ function ChatBox() {
       height: 60px;
       border-radius: 50%;
       backdrop-filter: blur(8px);
+      box-shadow:rgb(0 0 0 / 8%) 3px 5px 14px 2px;
     }
-
+    .welcomeMsg {
+      position: absolute;
+    bottom: 15px;
+    left: 0px;
+    background: rgba(255, 255, 255, 0.62);
+    transform: translateX(-75%);
+    padding: 4px 8px 4px 8px;
+    font-size: 13px;
+    backdrop-filter: blur(7px);
+    width: max-content;
+    border-radius: 100px;
+    border:1.5px solid #ffffff6e;
+    }
     /* The popup chat - hidden by default */
     .chat-popup {
       align-items: end;
       display: flex;
       position: fixed;
-      
+      font-family: 'Inter', sans-serif;
       bottom: 15px;
       right: 15px;
       z-index: 9999999;
@@ -43,6 +58,7 @@ function ChatBox() {
       background: linear-gradient(180deg, #fff, #cad5e6);
       overflow: hidden;
     position: relative;
+    box-shadow:rgb(0 0 0 / 8%) -2px 3px 16px 2px;
     }
 
     /* Change placeholder text color for both input and textarea */
@@ -199,7 +215,6 @@ function ChatBox() {
   }
 
   #successTextHeading {
-    color: #8BB593;
      font-size: 42px;
     font-family: 'Inter', sans-serif;
     margin-top: 5px;
@@ -216,7 +231,6 @@ function ChatBox() {
   #successTextSubtitle
   {
     font-size: 14px;
-    color: #8BB593;
     margin-top: 5px;
     margin-bottom: 20px;
     text-align: center
@@ -231,12 +245,11 @@ function ChatBox() {
     border-right: 1px solid #bdcbe2 !important;
   }
   #successButton{
-    border: solid 1px #8BB593;
-    background-color: transparent;
+    background: transparent;
     border-radius: 20px;
-    color: #8BB593;
     padding: 5px 10px;
     margin: auto;
+    color:#ffffff;
     cursor: pointer;
   }
 
@@ -263,6 +276,10 @@ function ChatBox() {
   // Create chat popup
   var chatPopup = document.createElement("div");
   chatPopup.className = "chat-popup";
+
+  var welcomeMsg = document.createElement("div");
+  welcomeMsg.innerHTML=welcomeText
+  welcomeMsg.className = "welcomeMsg";
 
   // Create form
   var form = document.createElement("form");
@@ -320,6 +337,7 @@ function ChatBox() {
   attachmentContainer.appendChild(inputFile);
   form.appendChild(attachmentContainer);
 
+
   // Create send button
   var sendButton = document.createElement("button");
   sendButton.type = "submit";
@@ -368,7 +386,7 @@ function ChatBox() {
   successTextSubtitle.textContent = "You will hear back from us soon";
   overlaySuccessDivText.appendChild(successTextSubtitle);
 
-  var successButton = document.createElement("button");
+  var successButton = document.createElement("a");
   successButton.id = "successButton";
   successButton.textContent = "← Send another";
   overlaySuccessDivText.appendChild(successButton);
@@ -379,6 +397,14 @@ function ChatBox() {
   // Append form to chat popup
   chatPopup.appendChild(form);
   chatPopup.appendChild(img)
+  
+  setTimeout(function(){ 
+    chatPopup.appendChild(welcomeMsg)
+
+   }, 7000);
+
+
+ 
 
   // Append chat button and chat popup to the body
   // userscomRoot.appendChild(img);
@@ -392,20 +418,22 @@ function ChatBox() {
     
     if(form.style.display==='block'){
       form.style.display = "none";
+      welcomeMsg.style.display="block"
     }else{
       form.style.display = "block";
+      welcomeMsg.style.display="none"
     }
   });
-
+ 
   // img.addEventListener("click", function () {
   //   form.style.display = "none";
   // });
 
   var successButton = form.querySelector("#successButton");
   successButton.addEventListener("click", function () {
-    // var overlayDivSuccess = chatPopup.querySelector("#overlaySuccess");
-    overlaySuccessDiv.style.display="none";
-    form.querySelector("#overlaySuccess").style.display = "none";
+    var overlayDivSuccess = chatPopup.querySelector("#overlaySuccess");
+    overlayDivSuccess.style.display="none";
+    // form.querySelector("#overlaySuccess").style.display = "flex";
   //  form.querySelector("#overlaySuccess").style.display = "none";
 
     
@@ -430,8 +458,26 @@ function ChatBox() {
             method: 'POST',
             body: formData,
         }).then((response) => {
+        
           form.querySelector("#overlaySuccess").style.display = "flex";
-        })
+
+          successButton.style.backgroundColor='#78c27d'
+          successTextHeading.textContent='Sent'
+          successTextSubtitle.textContent='You will hear from us very soon'
+          overlaySuccessDiv.style.backgroundColor='rgb(234 255 237)';
+          overlaySuccessDivText.style.color='#78c27d';
+          
+        }).catch((error) => {
+          // Handle any errors that occurred during the fetch
+          form.querySelector("#overlaySuccess").style.display = "flex";
+          successButton.style.backgroundColor='#ff8282'
+          successTextHeading.textContent='Error'
+          successTextSubtitle.textContent='Something went wrong. Try again later.'
+          overlaySuccessDiv.style.backgroundColor='rgb(255 234 239)';
+          overlaySuccessDivText.style.color='#ff8282';
+        });
+
+       
   });
 
   document.addEventListener('updateUserAttributes', (event) => {
