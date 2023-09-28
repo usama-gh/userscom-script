@@ -153,7 +153,7 @@ function ChatBox() {
     max-height: 60px;
   }
 
-  #image-preview #iconContainer
+  #iconContainer
   {
     
     background: #fff;
@@ -164,23 +164,25 @@ function ChatBox() {
     justify-content: center;
     top:0;
     right:0;
+    cursor:pointer;
+    position:absolute;
   }
 
 
   #extensionDiv {
-    background: lightgray;
+    background: white;
     display: flex;
     justify-content: center;
     border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  
   }
 
-  #iconContainer {
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-    right: 30px;
-    position: absolute;
-  }
+
 
   .imagePicker {
     font-size: 1px;
@@ -588,9 +590,9 @@ function ChatBox() {
                 extensionDiv.id = "extensionDiv";
                 const iconContainer = document.createElement('div');
                 iconContainer.id = "iconContainer";
-                const text = document.createElement('h3');
+                const text = document.createElement('p');
                 text.textContent = fileExtension;
-                iconContainer.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+                iconContainer.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" width="13px" height="13px" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>';
                 extensionDiv.appendChild(iconContainer);
                 extensionDiv.appendChild(text);
                 dropArea.appendChild(extensionDiv);
