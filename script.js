@@ -25,7 +25,7 @@ function ChatBox() {
     }
     .welcomeMsg {
       position: absolute;
-    bottom: 15px;
+    bottom: 40px;
     left: 0px;
     background: rgba(255, 255, 255, 0.62);
     transform: translateX(-75%);
@@ -33,7 +33,7 @@ function ChatBox() {
     font-size: 13px;
     backdrop-filter: blur(7px);
     width: max-content;
-    border-radius: 100px;
+    border-radius: 55px 55px 1px 55px;
     border:1.5px solid #ffffff6e;
     }
     /* The popup chat - hidden by default */
@@ -141,25 +141,31 @@ function ChatBox() {
    
 
     #drop-area {
-      // border-radius: 12px;
-      // border: 2px dashed #ccc;
-      // padding: 20px;
-      // text-align: center;
+   
+      position: absolute;
+    transform: translateY(-100%);
+    padding:9px;
   }
 
-  #image-preview {
-    height: 100px;
-    width: 200px;
-  }
 
   #image-preview img{
-    height: 100px
+    border-radius: 6px;
+    max-height: 60px;
   }
 
   #image-preview #iconContainer
   {
-    right: 20px;
+    
+    background: #fff;
+    border-radius: 30px;
+    box-shadow: 0px 0 3px #00000054;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top:0;
+    right:0;
   }
+
 
   #extensionDiv {
     background: lightgray;
@@ -250,6 +256,7 @@ function ChatBox() {
     padding: 5px 10px;
     margin: auto;
     color:#ffffff;
+    font-size:11px;
     cursor: pointer;
   }
 
@@ -551,7 +558,7 @@ function ChatBox() {
 
                   const iconContainer = document.createElement('div');
                   iconContainer.id = "iconContainer";
-                  iconContainer.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+                  iconContainer.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" width="13px" height="13px" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>';
                   imagePreview.appendChild(iconContainer);
                   imagePreview.appendChild(imgElement);
                   dropArea.appendChild(imagePreview);
