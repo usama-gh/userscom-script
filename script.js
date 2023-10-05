@@ -3,9 +3,11 @@ const image = document.getElementById("userscom-chat").getAttribute("data-image"
 var welcomeText = document.getElementById("userscom-chat").getAttribute("welcome-text");
 const position = document.getElementById("userscom-chat").getAttribute("position");
 // var image = "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg";
+const BASE_URL = "http://127.0.0.1:8000";
+
 
 // Define the custom element tag
-function ChatBox() {
+function ChatBox(currentPlan) {
   // Create styles
   const styles = `
   
@@ -267,6 +269,10 @@ function ChatBox() {
     margin: auto;
   }
 
+  .water-mark-text{
+    text-align: center
+  }
+
   `;
   
   var parentDiv = document.createElement('div');
@@ -299,7 +305,7 @@ function ChatBox() {
   fieldsWrapper.className="field-wrapper"
 
   var textarea = document.createElement("textarea");
-  textarea.placeholder = "Type message..";
+  textarea.placeholder = "Type message.."+currentPlan;
   textarea.name = "message";
   textarea.required = true;
 
@@ -353,6 +359,14 @@ function ChatBox() {
   sendButton.className = "btn";
   sendButton.textContent = "Send";
 
+  
+  var waterMark = document.createElement("div");
+  waterMark.className = "water-mark-container";
+
+  var waterMarkText = document.createElement("p");
+  waterMarkText.className = "water-mark-text";
+  waterMarkText.textContent = "Powered by Userscom";
+  waterMark.appendChild(waterMarkText);
   // Create close button
   // var closeButton = document.createElement("img");
   // closeButton.src = image;
@@ -366,6 +380,10 @@ function ChatBox() {
   // form.appendChild(nameInput);
   // form.appendChild(emailInput);
   form.appendChild(sendButton);
+  if(currentPlan == 0)
+  {
+    form.appendChild(waterMark);
+  }
  
   // form.appendChild(closeButton);
 
@@ -375,6 +393,7 @@ function ChatBox() {
   overlaySuccessDivText.id = 'text';
 
   overlaySuccessDiv.style.display="none";
+ 
 
   // var successIcon = document.createElement("div");
   // successIcon.className = "successIconContainer";
@@ -463,7 +482,7 @@ function ChatBox() {
       formData.append('user_attributes', JSON.stringify(userAttributes))
     }
 
-    fetch("http://127.0.0.1:8000/add/ticket/"+reference, {
+    fetch(BASE_URL+"/add/ticket/"+reference, {
             method: 'POST',
             body: formData,
         }).then((response) => {
@@ -476,6 +495,11 @@ function ChatBox() {
           overlaySuccessDiv.style.backgroundColor='rgb(234 255 237)';
           overlaySuccessDivText.style.color='#78c27d';
           
+          if(currentPlan == 0)
+          {
+            overlaySuccessDiv.appendChild(waterMark);
+          }
+          
         }).catch((error) => {
           // Handle any errors that occurred during the fetch
           form.querySelector("#overlaySuccess").style.display = "flex";
@@ -484,6 +508,10 @@ function ChatBox() {
           successTextSubtitle.textContent='Something went wrong. Try again later.'
           overlaySuccessDiv.style.backgroundColor='rgb(255 234 239)';
           overlaySuccessDivText.style.color='#ff8282';
+          if(currentPlan == 0)
+          {
+            overlaySuccessDiv.appendChild(waterMark);
+          }
         });
 
        
@@ -620,8 +648,21 @@ function ChatBox() {
 // Automatically add chat component when the page is completely loaded
 document.addEventListener("DOMContentLoaded", function () {
   if (!document.querySelector("chat-box")) {
-    ChatBox();
+    
+    fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      ChatBox(data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   }
+  
 });
 
 const userscom = {
