@@ -210,7 +210,7 @@ function ChatBox(currentPlan) {
     justify-content: center;
     align-items: center;
     position: absolute;
-
+    flex-direction: column;
     width: 100%;
     inset: 0px;
     transition: 0.3s;
@@ -270,7 +270,10 @@ function ChatBox(currentPlan) {
   }
 
   .water-mark-text{
-    text-align: center
+    text-align: center;
+    font-size: 10px;
+    margin-top: 0px;
+    margin-bottom: 4px;
   }
 
   `;
@@ -495,6 +498,11 @@ function ChatBox(currentPlan) {
           overlaySuccessDiv.style.backgroundColor='rgb(234 255 237)';
           overlaySuccessDivText.style.color='#78c27d';
           
+          for (let i = 0; i < form.length; i++) {
+              if (form[i].type !== "submit") {
+                  form[i].value = "";
+              }
+          }
           if(currentPlan == 0)
           {
             overlaySuccessDiv.appendChild(waterMark);
