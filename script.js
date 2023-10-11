@@ -51,6 +51,18 @@ function ChatBox(currentPlan) {
       row-gap:1.125rem;
     }
 
+    .chat-popup-left {
+      align-items: start;
+      display: flex;
+      position: fixed;
+      font-family: 'Inter', sans-serif;
+      bottom: 15px;
+      left: 15px;
+      z-index: 9999999;
+      flex-direction: column;
+      row-gap:1.125rem;
+    }
+
     /* Add styles to the form container */
     .form-container {
       display:none;
@@ -293,7 +305,13 @@ function ChatBox(currentPlan) {
 
   // Create chat popup
   var chatPopup = document.createElement("div");
-  chatPopup.className = "chat-popup";
+  if(position && position == 'bl')
+  {
+    chatPopup.className = "chat-popup-left";
+  }
+  else{
+    chatPopup.className = "chat-popup";
+  }
 
   var welcomeMsg = document.createElement("div");
   welcomeMsg.innerHTML=welcomeText
@@ -308,7 +326,7 @@ function ChatBox(currentPlan) {
   fieldsWrapper.className="field-wrapper"
 
   var textarea = document.createElement("textarea");
-  textarea.placeholder = "Type message.."+currentPlan;
+  textarea.placeholder = "Type message..";
   textarea.name = "message";
   textarea.required = true;
 
