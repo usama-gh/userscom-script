@@ -36,7 +36,7 @@ function ChatBox(currentPlan) {
     backdrop-filter: blur(7px);
     width: max-content;
     border-radius: 55px 55px 1px 55px;
-    border:1.5px solid #ffffff6e;
+    border:1.5px solid rgb(0 0 0 / 11%);
     }
     /* The popup chat - hidden by default */
     .chat-popup {
@@ -124,6 +124,7 @@ function ChatBox(currentPlan) {
 
     /* Set a style for the submit/send button */
     .form-container .btn {
+      position:relative;
       background-color: #dfe6f3;
     color: rgb(71, 89, 113);
     padding: 16px 20px;
@@ -283,10 +284,16 @@ function ChatBox(currentPlan) {
 
   .water-mark-text{
     text-align: center;
-    font-size: 10px;
-    margin-top: 0px;
-    margin-bottom: 4px;
+    font-size: 11px;
+    color:#7c818b;
+    margin-bottom: 8px;
   }
+  .water-mark-container{
+    margin-top:9px;
+    margin-bottom:9px;
+  }
+
+  .button--loading{color:transparent !important;} .button--loading::after { content: ""; position: absolute; width: 16px; height: 16px; top: 0; left: 0; right: 0; bottom: 0; margin: auto; border: 4px solid transparent; border-top-color: #ffffff; border-radius: 50%; animation: button-loading-spinner 1s ease infinite; } @keyframes button-loading-spinner { from { transform: rotate(0turn);}to {transform: rotate(1turn);}}
 
   `;
   
@@ -386,7 +393,7 @@ function ChatBox(currentPlan) {
 
   var waterMarkText = document.createElement("p");
   waterMarkText.className = "water-mark-text";
-  waterMarkText.textContent = "Powered by Userscom";
+  waterMarkText.textContent = "Chat by Userscom";
   waterMark.appendChild(waterMarkText);
   // Create close button
   // var closeButton = document.createElement("img");
@@ -502,7 +509,7 @@ function ChatBox(currentPlan) {
     {
       formData.append('user_attributes', JSON.stringify(userAttributes))
     }
-
+    sendButton.classList.add("button--loading");
     fetch(BASE_URL+"/add/ticket/"+reference, {
             method: 'POST',
             body: formData,
@@ -525,6 +532,7 @@ function ChatBox(currentPlan) {
           {
             overlaySuccessDiv.appendChild(waterMark);
           }
+          sendButton.classList.remove("button--loading");
           
         }).catch((error) => {
           // Handle any errors that occurred during the fetch
@@ -538,6 +546,7 @@ function ChatBox(currentPlan) {
           {
             overlaySuccessDiv.appendChild(waterMark);
           }
+          sendButton.classList.remove("button--loading");
         });
 
        
