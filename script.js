@@ -300,7 +300,7 @@ function ChatBox(currentPlan) {
   var parentDiv = document.createElement('div');
   document.body.append(parentDiv);
   const userscomRoot = parentDiv.attachShadow({ mode: 'open' });
-
+  let uploadedFile = null;
   const styleSheet = new CSSStyleSheet();
   styleSheet.replaceSync(styles);
   userscomRoot.adoptedStyleSheets = [styleSheet];
@@ -501,8 +501,8 @@ function ChatBox(currentPlan) {
     const formData = new FormData(form);
     const fileInput = form.querySelector('#fileInput');
     const file = fileInput ? fileInput.files[0] : null;
-    if (file) {
-        formData.append('attachment', file);
+    if (file || uploadedFile) {
+        formData.append('attachment', file || uploadedFile);
     }
 
     if(userAttributes)
@@ -601,6 +601,7 @@ function ChatBox(currentPlan) {
 
         function handleFile(file) {
           const fileExtension = file.name.split('.').pop();
+          uploadedFile = file
           const existingExtensionDiv = form.querySelector("#extensionDiv");
           if (existingExtensionDiv) {
             existingExtensionDiv.remove();
