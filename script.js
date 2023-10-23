@@ -3,7 +3,8 @@ const image = document.getElementById("userscom-chat").getAttribute("data-image"
 var welcomeText = document.getElementById("userscom-chat").getAttribute("welcome-text");
 const position = document.getElementById("userscom-chat").getAttribute("position");
 // var image = "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg";
-const BASE_URL = "http://127.0.0.1:8000";
+// const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://app.userscom.com";
 
 
 // Define the custom element tag

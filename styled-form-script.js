@@ -294,7 +294,7 @@ userscomRoot.querySelector("form").addEventListener("submit", (event) => {
   if (userAttributes) {
     formData.append("user_attributes", JSON.stringify(userAttributes));
   }
-  fetch("http://127.0.0.1:8000/add/ticket/"+reference, {
+  fetch("https://app.userscom.com/add/ticket/"+reference, {
     method: "POST",
     body: formData,
   })
