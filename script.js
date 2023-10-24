@@ -70,10 +70,10 @@ function ChatBox(currentPlan) {
       max-width: 400px;
       width:350px;
       border-radius:15px;
-      background: linear-gradient(180deg, #fff, #cad5e6);
+      background: linear-gradient(180deg, #fff, rgb(206 217 234));
       overflow: hidden;
     position: relative;
-    box-shadow:rgb(0 0 0 / 8%) -2px 3px 16px 2px;
+    box-shadow:rgba(0, 0, 0, 0.12) 2px 3px 20px 0px;
     }
 
     /* Change placeholder text color for both input and textarea */
@@ -135,7 +135,7 @@ function ChatBox(currentPlan) {
     width: -webkit-fill-available;
     letter-spacing: -0.4px;
     background-clip: padding-box;
-    margin: 7px;
+    margin: 7px 7px 0px;
     border-radius: 9px;
     transition: background-color 0.3s;
 
@@ -287,7 +287,6 @@ function ChatBox(currentPlan) {
     text-align: center;
     font-size: 11px;
     color:#7c818b;
-    margin-bottom: 8px;
   }
   .water-mark-container{
     margin-top:9px;
