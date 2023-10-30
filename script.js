@@ -3,8 +3,8 @@ const image = document.getElementById("userscom-chat").getAttribute("data-image"
 var welcomeText = document.getElementById("userscom-chat").getAttribute("welcome-text");
 const position = document.getElementById("userscom-chat").getAttribute("position");
 // var image = "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg";
-// const BASE_URL = "http://127.0.0.1:8000";
-const BASE_URL = "https://app.userscom.com";
+const BASE_URL = "http://127.0.0.1:8000";
+// const BASE_URL = "https://app.userscom.com";
 
 
 // Define the custom element tag
@@ -25,6 +25,19 @@ function ChatBox(currentPlan) {
       border-radius: 50%;
       backdrop-filter: blur(8px);
       box-shadow:rgb(0 0 0 / 8%) 3px 5px 14px 2px;
+    }
+    .welcomeMsgLeft{
+      position: absolute;
+      bottom: 40px;
+      left: 0px;
+      background: rgba(255, 255, 255, 0.62);
+      transform: translateX(75%);
+      padding: 4px 8px 4px 8px;
+      font-size: 13px;
+      backdrop-filter: blur(7px);
+      width: max-content;
+      border-radius: 55px 55px 55px 1px;
+      border:1.5px solid rgb(0 0 0 / 11%);
     }
     .welcomeMsg {
       position: absolute;
@@ -322,7 +335,13 @@ function ChatBox(currentPlan) {
 
   var welcomeMsg = document.createElement("div");
   welcomeMsg.innerHTML=welcomeText
-  welcomeMsg.className = "welcomeMsg";
+  if(position == 'bl')
+  {
+    welcomeMsg.className = 'welcomeMsgLeft'
+  }
+  else{
+    welcomeMsg.className = "welcomeMsg";
+  }
 
   // Create form
   var form = document.createElement("form");
@@ -455,7 +474,10 @@ function ChatBox(currentPlan) {
   chatPopup.appendChild(img)
   
   setTimeout(function(){ 
-    chatPopup.appendChild(welcomeMsg)
+    if(welcomeText)
+    {
+      chatPopup.appendChild(welcomeMsg)
+    }
 
    }, 7000);
 
