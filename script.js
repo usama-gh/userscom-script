@@ -1,13 +1,13 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 var welcomeText = document.getElementById("userscom-chat").getAttribute("welcome-text");
 const position = document.getElementById("userscom-chat").getAttribute("position");
-// var image = "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg";
+var image = document.getElementById("userscom-chat").getAttribute("file-name");;
 const BASE_URL = "http://127.0.0.1:8000";
 // const BASE_URL = "https://app.userscom.com";
 
 
 // Define the custom element tag
-function ChatBox(projectDetails) {
+function ChatBox() {
   // Create styles
   const styles = `
   
@@ -319,7 +319,7 @@ function ChatBox(projectDetails) {
   
   // Create chat button
   var img = document.createElement("img");
-  img.src=  "http://de9wzdn1e7258.cloudfront.net/"+projectDetails.image;
+  img.src=  image;
   img.className = "open-button";
 
   // Create chat popup
@@ -697,18 +697,19 @@ function ChatBox(projectDetails) {
 document.addEventListener("DOMContentLoaded", function () {
   if (!document.querySelector("chat-box")) {
     
-    fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then((data) => {
-      ChatBox(data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+    // fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((response) => {
+    //   if (!response.ok) {
+    //     throw new Error('Network response was not ok');
+    //   }
+    //   return response.json();
+    // })
+    // .then((data) => {
+    //   ChatBox(data);
+    // })
+    // .catch((error) => {
+    //   console.error('Error:', error);
+    // });
+    ChatBox(data);
   }
   
 });
