@@ -7,7 +7,7 @@ const BASE_URL = "http://127.0.0.1:8000";
 
 
 // Define the custom element tag
-function ChatBox() {
+function ChatBox(projectDetails) {
   // Create styles
   const styles = `
   
@@ -546,7 +546,10 @@ function ChatBox() {
                   form[i].value = "";
               }
           }
-          
+          if(projectDetails?.plan == 0)
+          {
+            overlaySuccessDiv.appendChild(waterMark);
+          }
           sendButton.classList.remove("button--loading");
           
         }).catch((error) => {
@@ -557,7 +560,10 @@ function ChatBox() {
           successTextSubtitle.textContent='Something went wrong. Try again later.'
           overlaySuccessDiv.style.backgroundColor='rgb(255 234 239)';
           overlaySuccessDivText.style.color='#ff8282';
-          
+          if(projectDetails?.plan == 0)
+          {
+            overlaySuccessDiv.appendChild(waterMark);
+          }
           sendButton.classList.remove("button--loading");
         });
 
@@ -697,19 +703,18 @@ function ChatBox() {
 document.addEventListener("DOMContentLoaded", function () {
   if (!document.querySelector("chat-box")) {
     
-    // fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((response) => {
-    //   if (!response.ok) {
-    //     throw new Error('Network response was not ok');
-    //   }
-    //   return response.json();
-    // })
-    // .then((data) => {
-    //   ChatBox(data);
-    // })
-    // .catch((error) => {
-    //   console.error('Error:', error);
-    // });
-    ChatBox(data);
+    fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      ChatBox(data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   }
   
 });
