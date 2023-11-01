@@ -1,5 +1,4 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
-const image = document.getElementById("userscom-chat").getAttribute("data-image");
 var welcomeText = document.getElementById("userscom-chat").getAttribute("welcome-text");
 const position = document.getElementById("userscom-chat").getAttribute("position");
 // var image = "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg";
@@ -8,7 +7,7 @@ const BASE_URL = "http://127.0.0.1:8000";
 
 
 // Define the custom element tag
-function ChatBox(currentPlan) {
+function ChatBox(projectDetails) {
   // Create styles
   const styles = `
   
@@ -320,7 +319,7 @@ function ChatBox(currentPlan) {
   
   // Create chat button
   var img = document.createElement("img");
-  img.src= image;
+  img.src=  "http://de9wzdn1e7258.cloudfront.net/"+projectDetails.image;
   img.className = "open-button";
 
   // Create chat popup
@@ -427,10 +426,7 @@ function ChatBox(currentPlan) {
   // form.appendChild(nameInput);
   // form.appendChild(emailInput);
   form.appendChild(sendButton);
-  if(currentPlan == 0)
-  {
-    form.appendChild(waterMark);
-  }
+  
  
   // form.appendChild(closeButton);
 
@@ -550,10 +546,7 @@ function ChatBox(currentPlan) {
                   form[i].value = "";
               }
           }
-          if(currentPlan == 0)
-          {
-            overlaySuccessDiv.appendChild(waterMark);
-          }
+          
           sendButton.classList.remove("button--loading");
           
         }).catch((error) => {
@@ -564,10 +557,7 @@ function ChatBox(currentPlan) {
           successTextSubtitle.textContent='Something went wrong. Try again later.'
           overlaySuccessDiv.style.backgroundColor='rgb(255 234 239)';
           overlaySuccessDivText.style.color='#ff8282';
-          if(currentPlan == 0)
-          {
-            overlaySuccessDiv.appendChild(waterMark);
-          }
+          
           sendButton.classList.remove("button--loading");
         });
 
