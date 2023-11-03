@@ -11,7 +11,7 @@ styleSheet.replaceSync(styles);
 userscomRoot.adoptedStyleSheets = [styleSheet];
 let projectDetails;
 
-fetch("http://localhost:8000/api/project/details/"+reference, { method: 'GET' }).then((response) => {
+fetch("https://app.userscom.com/api/project/details/"+reference, { method: 'GET' }).then((response) => {
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
