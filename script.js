@@ -2,8 +2,8 @@ const reference = document.getElementById("userscom-chat").getAttribute("data-re
 var welcomeText = document.getElementById("userscom-chat").getAttribute("welcome-text");
 const position = document.getElementById("userscom-chat").getAttribute("position");
 var image = document.getElementById("userscom-chat").getAttribute("file-name");;
-// const BASE_URL = "http://127.0.0.1:8000";
-const BASE_URL = "https://app.userscom.com";
+const BASE_URL = "http://127.0.0.1:8000";
+// const BASE_URL = "https://app.userscom.com";
 
 
 // Define the custom element tag
@@ -546,7 +546,8 @@ function ChatBox(projectDetails) {
                   form[i].value = "";
               }
           }
-          if(projectDetails?.plan == 0)
+          
+          if(localStorage.getItem('userscomPlan') && localStorage.getItem('userscomPlan') == 0)
           {
             overlaySuccessDiv.appendChild(waterMark);
           }
@@ -560,7 +561,7 @@ function ChatBox(projectDetails) {
           successTextSubtitle.textContent='Something went wrong. Try again later.'
           overlaySuccessDiv.style.backgroundColor='rgb(255 234 239)';
           overlaySuccessDivText.style.color='#ff8282';
-          if(projectDetails?.plan == 0)
+          if(localStorage.getItem('userscomPlan') && localStorage.getItem('userscomPlan') == 0)
           {
             overlaySuccessDiv.appendChild(waterMark);
           }
@@ -702,19 +703,8 @@ function ChatBox(projectDetails) {
 // Automatically add chat component when the page is completely loaded
 document.addEventListener("DOMContentLoaded", function () {
   if (!document.querySelector("chat-box")) {
+    ChatBox();
     
-    fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then((data) => {
-      ChatBox(data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
   }
   
 });
@@ -733,3 +723,13 @@ const userscom = {
     }
   }
 }
+
+fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((response) => {
+  return response.json();
+})
+.then((data) => {
+  localStorage.setItem("userscomPlan", data.plan)
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
