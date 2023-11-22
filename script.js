@@ -11,7 +11,7 @@ function ChatBox(projectDetails) {
   // Create styles
   const styles = `
   
-  @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
     /* Your styles go here */
     .open-button {
       background-color: #ffffffcc;
@@ -24,6 +24,12 @@ function ChatBox(projectDetails) {
       border-radius: 50%;
       backdrop-filter: blur(8px);
       box-shadow:rgb(0 0 0 / 8%) 3px 5px 14px 2px;
+    }
+    .userscom_body{
+      background: rgb(255, 255, 255);
+      border-radius: 15px;
+      box-shadow: rgba(100, 116, 139, 0.09) 0px 1px 13px;
+      margin: 7px;
     }
     .welcomeMsgLeft{
       position: absolute;
@@ -64,6 +70,18 @@ function ChatBox(projectDetails) {
       row-gap:1.125rem;
     }
 
+    .userscom_header{
+      padding:0px 20px;
+    
+
+    }
+    .userscom_heading {
+      font-size: 20px;
+      color:rgb(146 156 178);
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: -0.3px;
+    }
     .chat-popup-left {
       align-items: start;
       display: flex;
@@ -81,11 +99,12 @@ function ChatBox(projectDetails) {
       display:none;
       max-width: 400px;
       width:350px;
+      position:relative;
       border-radius:15px;
-      background: linear-gradient(180deg, #fff, rgb(206 217 234));
+      background: linear-gradient(37deg, rgb(242, 246, 255), rgb(206, 215, 231));
       overflow: hidden;
     position: relative;
-    box-shadow:rgba(0, 0, 0, 0.12) 2px 3px 20px 0px;
+    box-shadow:rgba(71, 89, 113, 0.11) 2px 3px 20px 10px;
     }
 
     /* Change placeholder text color for both input and textarea */
@@ -112,13 +131,14 @@ function ChatBox(projectDetails) {
     .textarea-wrapper{
       border-bottom: 1px solid #bdcbe2;
       display:flex;
+      position:relative;
       justify-content:center;
       align-items:center;
     }
   
     .form-container input {
       width: 50%;
-      padding-left: 20px;
+      padding-left: 14px;
       padding-right: 20px;
       font-family: 'Inter', sans-serif;
       padding-top:10px;
@@ -147,7 +167,7 @@ function ChatBox(projectDetails) {
     width: -webkit-fill-available;
     letter-spacing: -0.4px;
     background-clip: padding-box;
-    margin: 7px 7px 0px;
+    margin: 7px 7px 7px;
     border-radius: 9px;
     transition: background-color 0.3s;
 
@@ -346,6 +366,17 @@ function ChatBox(projectDetails) {
   var form = document.createElement("form");
   form.className = "form-container";
 
+  var header = document.createElement("div");
+  header.className="userscom_header"
+  header.innerHTML="<h3 class='userscom_heading'>Chat with us</h3>"
+  form.appendChild(header)
+
+
+  var formbody = document.createElement("div");
+  formbody.className="userscom_body"
+  form.appendChild(formbody)
+
+
   // Create textarea for message input
   var fieldsWrapper = document.createElement("div");
   fieldsWrapper.className="field-wrapper"
@@ -354,6 +385,8 @@ function ChatBox(projectDetails) {
   textarea.placeholder = "Type message..";
   textarea.name = "message";
   textarea.required = true;
+
+
 
   var textAreaWrapper = document.createElement("div");
   textAreaWrapper.className = "textarea-wrapper";
@@ -393,10 +426,11 @@ function ChatBox(projectDetails) {
     </svg>
   `;
 
-  form.appendChild(textAreaWrapper);
+  formbody.appendChild(textAreaWrapper)
+
   // Append the input and label elements to the shadow root
   attachmentContainer.appendChild(inputFile);
-  form.appendChild(attachmentContainer);
+  textAreaWrapper.appendChild(attachmentContainer);
 
 
   // Create send button
@@ -420,12 +454,12 @@ function ChatBox(projectDetails) {
 
   // Append elements to form
 
-  form.appendChild(dropArea);
-  form.appendChild(fieldsWrapper)
+  formbody.appendChild(dropArea);
+  formbody.appendChild(fieldsWrapper)
 
   // form.appendChild(nameInput);
   // form.appendChild(emailInput);
-  form.appendChild(sendButton);
+  formbody.appendChild(sendButton);
   
  
   // form.appendChild(closeButton);
@@ -459,7 +493,7 @@ function ChatBox(projectDetails) {
 
   var successButton = document.createElement("a");
   successButton.id = "successButton";
-  successButton.textContent = "← Send another";
+  successButton.textContent = "Send another";
   overlaySuccessDivText.appendChild(successButton);
   
   overlaySuccessDiv.appendChild(overlaySuccessDivText);
