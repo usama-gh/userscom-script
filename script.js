@@ -78,10 +78,10 @@ function ChatBox(projectDetails) {
     }
     .userscom_heading {
       font-size: 20px;
-      color:rgb(146 156 178);
+      color:rgb(128 138 153);
       font-weight: 600;
       font-family: 'Inter', sans-serif;
-      letter-spacing: -0.3px;
+      letter-spacing: -0.04px;
     }
     .chat-popup-left {
       align-items: start;
@@ -101,11 +101,11 @@ function ChatBox(projectDetails) {
       max-width: 400px;
       width:350px;
       position:relative;
-      border-radius:15px;
-      background: linear-gradient(37deg, rgb(242, 246, 255), rgb(206, 215, 231));
+      border-radius:20px;
+      background:linear-gradient(36deg, rgb(242, 246, 255), rgb(255 255 255));
       overflow: hidden;
     position: relative;
-    box-shadow:rgba(71, 89, 113, 0.11) 2px 3px 20px 10px;
+    box-shadow:rgba(0, 0, 0, 0.16) 0px 5px 40px;
     }
 
     /* Change placeholder text color for both input and textarea */
@@ -130,7 +130,7 @@ function ChatBox(projectDetails) {
     }
     
     .textarea-wrapper{
-      border-bottom: 1px solid #bdcbe2;
+      border-bottom: 1px solid rgb(241 241 241);
       display:flex;
       position:relative;
       justify-content:center;
@@ -159,7 +159,7 @@ function ChatBox(projectDetails) {
     /* Set a style for the submit/send button */
     .form-container .btn {
       position:relative;
-      background-color: #dfe6f3;
+      background-color: #f3f7ff;
     color: rgb(71, 89, 113);
     padding: 16px 20px;
     border: none;
@@ -248,7 +248,7 @@ function ChatBox(projectDetails) {
     right: 20px;
     position: absolute;
     top: 20px;
-    color:#bdcbe2;
+    color:rgb(241 241 241);
   }
 
   #overlaySuccess {
@@ -295,11 +295,11 @@ function ChatBox(projectDetails) {
   .field-wrapper {
     display:flex;
     align-items:center;
-    border-bottom: 1px solid #bdcbe2 !important;
+    border-bottom: 1px solid rgb(241 241 241) !important;
 
   }
   .field-wrapper > :first-child {
-    border-right: 1px solid #bdcbe2 !important;
+    border-right: 1px solid rgb(241 241 241) !important;
   }
   #successButton{
     background: transparent;
@@ -326,7 +326,7 @@ function ChatBox(projectDetails) {
     margin-bottom:9px;
   }
 
-  .button--loading{color:transparent !important;} .button--loading::after { content: ""; position: absolute; width: 16px; height: 16px; top: 0; left: 0; right: 0; bottom: 0; margin: auto; border: 4px solid transparent; border-top-color: #ffffff; border-radius: 50%; animation: button-loading-spinner 1s ease infinite; } @keyframes button-loading-spinner { from { transform: rotate(0turn);}to {transform: rotate(1turn);}}
+  .button--loading{color:transparent !important;} .button--loading::after { content: ""; position: absolute; width: 16px; height: 16px; top: 0; left: 0; right: 0; bottom: 0; margin: auto; border: 4px solid transparent; border-top-color: #7a8696; border-radius: 50%; animation: button-loading-spinner 1s ease infinite; } @keyframes button-loading-spinner { from { transform: rotate(0turn);}to {transform: rotate(1turn);}}
 
   `;
   
@@ -369,7 +369,7 @@ function ChatBox(projectDetails) {
 
   var header = document.createElement("div");
   header.className="userscom_header"
-  header.innerHTML="<h3 class='userscom_heading'>Chat with us</h3>"
+  header.innerHTML="<h3 class='userscom_heading'>Message us</h3>"
   form.appendChild(header)
 
 
@@ -383,7 +383,7 @@ function ChatBox(projectDetails) {
   fieldsWrapper.className="field-wrapper"
 
   var textarea = document.createElement("textarea");
-  textarea.placeholder = "Type message..";
+  textarea.placeholder = "Type your message..";
   textarea.name = "message";
   textarea.required = true;
 
