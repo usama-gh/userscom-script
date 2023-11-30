@@ -1,8 +1,9 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 var welcomeText = document.getElementById("userscom-chat").getAttribute("welcome-text");
 const position = document.getElementById("userscom-chat").getAttribute("position");
-var image = document.getElementById("userscom-chat").getAttribute("file-name");;
-// const BASE_URL = "http://127.0.0.1:8000";
+var image = document.getElementById("userscom-chat").getAttribute("file-name");
+let ticketId;
+// const BASE_URL = "http://127.0.0.1:9000";
 const BASE_URL = "https://app.userscom.com";
 
 
@@ -561,12 +562,16 @@ function ChatBox(projectDetails) {
     {
       formData.append('user_attributes', JSON.stringify(userAttributes))
     }
+    const endPoint = ticketId && ticketId != undefined ? BASE_URL+"/edit/ticket/"+ticketId : BASE_URL+"/add/ticket/"+reference;
     sendButton.classList.add("button--loading");
-    fetch(BASE_URL+"/add/ticket/"+reference, {
+    fetch(endPoint, {
             method: 'POST',
             body: formData,
         }).then((response) => {
-        
+          return response.json();
+        })
+        .then((data) => {
+          ticketId = data
           form.querySelector("#overlaySuccess").style.display = "flex";
 
           successButton.style.backgroundColor='#78c27d'
@@ -575,11 +580,11 @@ function ChatBox(projectDetails) {
           overlaySuccessDiv.style.backgroundColor='rgb(234 255 237)';
           overlaySuccessDivText.style.color='#78c27d';
           
-          for (let i = 0; i < form.length; i++) {
-              if (form[i].type !== "submit") {
-                  form[i].value = "";
-              }
-          }
+          // for (let i = 0; i < form.length; i++) {
+          //     if (form[i].type !== "submit") {
+          //         form[i].value = "";
+          //     }
+          // }
           
           if(localStorage.getItem('userscomPlan') && localStorage.getItem('userscomPlan') == 0)
           {
@@ -587,7 +592,8 @@ function ChatBox(projectDetails) {
           }
           sendButton.classList.remove("button--loading");
           
-        }).catch((error) => {
+        })
+        .catch((error) => {
           // Handle any errors that occurred during the fetch
           form.querySelector("#overlaySuccess").style.display = "flex";
           successButton.style.backgroundColor='#ff8282'
