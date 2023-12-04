@@ -4,8 +4,8 @@ const reference = document.getElementById("userscom-chat").getAttribute("data-re
 // var image = document.getElementById("userscom-chat").getAttribute("file-name");
 let ticketId;
 let projectDetails;
-const BASE_URL = "http://127.0.0.1:9000";
-// const BASE_URL = "https://app.userscom.com";
+// const BASE_URL = "http://127.0.0.1:9000";
+const BASE_URL = "https://app.userscom.com";
 
 
 // Define the custom element tag
