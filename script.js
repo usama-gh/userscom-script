@@ -1,7 +1,4 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
-// var welcomeText = document.getElementById("userscom-chat").getAttribute("welcome-text");
-// const position = document.getElementById("userscom-chat").getAttribute("position");
-// var image = document.getElementById("userscom-chat").getAttribute("file-name");
 let ticketId;
 let projectDetails;
 // const BASE_URL = "http://127.0.0.1:9000";
@@ -483,10 +480,7 @@ function ChatBox() {
   waterMarkText.className = "water-mark-text";
   waterMarkText.textContent = "Chat by Userscom";
   waterMark.appendChild(waterMarkText);
-  // Create close button
-  // var closeButton = document.createElement("img");
-  // closeButton.src = image;
-  // closeButton.className = "cancel";
+
 
   // Append elements to form
 
@@ -508,14 +502,7 @@ function ChatBox() {
   overlaySuccessDiv.style.display="none";
  
 
-  // var successIcon = document.createElement("div");
-  // successIcon.className = "successIconContainer";
-  //   successIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-  //   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-  // </svg>
-  // `;
 
-  // overlaySuccessDivText.appendChild(successIcon);
 
   var successTextHeading = document.createElement("h6");
   successTextHeading.id = "successTextHeading";
