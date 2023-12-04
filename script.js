@@ -12,9 +12,9 @@ const BASE_URL = "https://app.userscom.com";
 function ChatBox() {
 
   console.log('projectDetails...', projectDetails)
-  const welcomeText = projectDetails.welcome_text || 'Need Help'
-  const position = projectDetails.position || 'br'
-  const image = 'https://assets.userscom.com/'+projectDetails.image
+  const welcomeText = projectDetails && projectDetails.welcome_text || 'Need Help'
+  const position = projectDetails && projectDetails.position || 'br'
+  const image = projectDetails && projectDetails.image ? 'https://assets.userscom.com/'+projectDetails.image : 'https://assets.userscom.com/project_avatar.jpg'
   // Create styles
   const styles = `
   
