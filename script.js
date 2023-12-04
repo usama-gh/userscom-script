@@ -1,8 +1,8 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 let ticketId;
 let projectDetails;
-// const BASE_URL = "http://127.0.0.1:9000";
-const BASE_URL = "https://app.userscom.com";
+const BASE_URL = "http://127.0.0.1:8000";
+// const BASE_URL = "https://app.userscom.com";
 
 
 // Define the custom element tag
@@ -19,15 +19,21 @@ function ChatBox() {
     /* Your styles go here */
     .open-button {
       background-color: #ffffffcc;
-      color: white;
+      color: rgb(71 77 113);
       padding: 7px;
       border: none;
       cursor: pointer;
       width: 60px;
       height: 60px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
       border-radius: 50%;
       backdrop-filter: blur(8px);
       box-shadow:rgb(0 0 0 / 8%) 3px 5px 14px 2px;
+    }
+    .open-button svg {
+      width: 30px;
     }
     .userscom_body{
       background: rgb(255, 255, 255);
@@ -71,7 +77,7 @@ function ChatBox() {
       right: 15px;
       z-index: 9999999;
       flex-direction: column;
-      row-gap:1.125rem;
+      row-gap:0.025rem;
     }
 
     .userscom_header{
@@ -95,7 +101,7 @@ function ChatBox() {
       left: 15px;
       z-index: 9999999;
       flex-direction: column;
-      row-gap:1.125rem;
+      row-gap:0.025rem;
     }
 
     /* Add styles to the form container */
@@ -336,10 +342,18 @@ function ChatBox() {
   var parentDiv = document.createElement('div');
   document.body.append(parentDiv);
   const userscomRoot = parentDiv.attachShadow({ mode: 'open' });
+
+  const styleElement = document.createElement('style');
+  styleElement.textContent = styles;
+
+  // Append the style element to the shadow DOM
+  userscomRoot.appendChild(styleElement);
+
+  
   let uploadedFile = null;
-  const styleSheet = new CSSStyleSheet();
-  styleSheet.replaceSync(styles);
-  userscomRoot.adoptedStyleSheets = [styleSheet];
+  // const styleSheet = new CSSStyleSheet();
+  // styleSheet.replaceSync(styles);
+  // userscomRoot.adoptedStyleSheets = [styleSheet];
   
   // Create chat button
   if(projectDetails && projectDetails.icon != 'image')
@@ -349,15 +363,15 @@ function ChatBox() {
 
     switch (projectDetails.icon) {
       case '1':
-        svg = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=""><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 011.037-.443 48.282 48.282 0 005.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>';
+        svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M4.848 2.771A49.144 49.144 0 0112 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 01-3.476.383.39.39 0 00-.297.17l-2.755 4.133a.75.75 0 01-1.248 0l-2.755-4.133a.39.39 0 00-.297-.17 48.9 48.9 0 01-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97z" clip-rule="evenodd" /></svg>';
         break;
 
       case '2':
-        svg = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" /></svg>';
+        svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M5.337 21.718a6.707 6.707 0 01-.533-.074.75.75 0 01-.44-1.223 3.73 3.73 0 00.814-1.686c.023-.115-.022-.317-.254-.543C3.274 16.587 2.25 14.41 2.25 12c0-5.03 4.428-9 9.75-9s9.75 3.97 9.75 9c0 5.03-4.428 9-9.75 9-.833 0-1.643-.097-2.417-.279a6.721 6.721 0 01-4.246.997z" clip-rule="evenodd" /></svg>';
         break;
 
       case '3':
-        svg = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.810.22 1.668.337 2.555.337z" /></svg>';
+        svg = '<svg class="w-6 h-6 text-gray-700"  viewBox="0 0 364 364" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M327.6 0H36.4C26.7461 0 17.4876 3.83496 10.6613 10.6612C3.83499 17.4875 0 26.746 0 36.3998V254.798C0 264.452 3.83499 273.711 10.6613 280.537C17.4876 287.363 26.7461 291.198 36.4 291.198H91V345.798C91.0097 349.228 91.9888 352.586 93.8242 355.484C95.6597 358.382 98.2769 360.703 101.374 362.178C103.794 363.418 106.481 364.043 109.2 363.998C113.305 363.974 117.282 362.563 120.484 359.994L206.57 291.198H327.6C337.254 291.198 346.512 287.363 353.339 280.537C360.165 273.711 364 264.452 364 254.798V36.3998C364 26.746 360.165 17.4875 353.339 10.6612C346.512 3.83496 337.254 0 327.6 0Z" fill="currentColor" /></svg>';
         break;
 
       default:
@@ -549,7 +563,7 @@ function ChatBox() {
     
     if(form.style.display==='block'){
       form.style.display = "none";
-      welcomeMsg.style.display="block"
+     
     }else{
       form.style.display = "block";
       welcomeMsg.style.display="none"
