@@ -1,14 +1,20 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
-var welcomeText = document.getElementById("userscom-chat").getAttribute("welcome-text");
-const position = document.getElementById("userscom-chat").getAttribute("position");
-var image = document.getElementById("userscom-chat").getAttribute("file-name");
+// var welcomeText = document.getElementById("userscom-chat").getAttribute("welcome-text");
+// const position = document.getElementById("userscom-chat").getAttribute("position");
+// var image = document.getElementById("userscom-chat").getAttribute("file-name");
 let ticketId;
-// const BASE_URL = "http://127.0.0.1:9000";
-const BASE_URL = "https://app.userscom.com";
+let projectDetails;
+const BASE_URL = "http://127.0.0.1:9000";
+// const BASE_URL = "https://app.userscom.com";
 
 
 // Define the custom element tag
-function ChatBox(projectDetails) {
+function ChatBox() {
+
+  console.log('projectDetails...', projectDetails)
+  const welcomeText = projectDetails.welcome_text || 'Need Help'
+  const position = projectDetails.position || 'br'
+  const image = 'https://assets.userscom.com/'+projectDetails.image
   // Create styles
   const styles = `
   
@@ -339,9 +345,37 @@ function ChatBox(projectDetails) {
   userscomRoot.adoptedStyleSheets = [styleSheet];
   
   // Create chat button
-  var img = document.createElement("img");
-  img.src=  image;
-  img.className = "open-button";
+  if(projectDetails && projectDetails.icon != 'image')
+  {
+    var img = document.createElement("div");
+    var svg;
+
+    switch (projectDetails.icon) {
+      case 1:
+        svg = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=""><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 011.037-.443 48.282 48.282 0 005.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>';
+        break;
+
+      case 2:
+        svg = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" /></svg>';
+        break;
+
+      case 3:
+        svg = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.810.22 1.668.337 2.555.337z" /></svg>';
+        break;
+
+      default:
+    }
+
+    img.innerHTML = svg;
+    img.className = "open-button";
+
+
+  }
+  else{
+    var img = document.createElement("img");
+    img.src=  image;
+    img.className = "open-button";
+  }
 
   // Create chat popup
   var chatPopup = document.createElement("div");
@@ -740,15 +774,6 @@ function ChatBox(projectDetails) {
           }
 }
 
-// Automatically add chat component when the page is completely loaded
-document.addEventListener("DOMContentLoaded", function () {
-  if (!document.querySelector("chat-box")) {
-    ChatBox();
-    
-  }
-  
-});
-
 const userscom = {
   user: {
     set(options) {
@@ -769,7 +794,19 @@ fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((respo
 })
 .then((data) => {
   localStorage.setItem("userscomPlan", data.plan)
+  projectDetails = data
 })
 .catch((error) => {
   console.error('Error:', error);
+});
+
+// Automatically add chat component when the page is completely loaded
+document.addEventListener("DOMContentLoaded", function () {
+  if (!document.querySelector("chat-box")) {
+    setTimeout(() => {
+      ChatBox();
+    }, 1000)
+    
+  }
+  
 });
