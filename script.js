@@ -1,8 +1,8 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 let ticketId;
 let projectDetails;
-// const BASE_URL = "http://127.0.0.1:8000";
-const BASE_URL = "https://app.userscom.com";
+const BASE_URL = "http://127.0.0.1:8000";
+// const BASE_URL = "https://app.userscom.com";
 
 
 // Define the custom element tag
@@ -23,8 +23,8 @@ function ChatBox() {
       padding: 7px;
       border: none;
       cursor: pointer;
-      width: 60px;
-      height: 60px;
+      width: 35px;
+      height: 35px;
       display:flex;
       justify-content:center;
       align-items:center;
@@ -33,7 +33,7 @@ function ChatBox() {
       box-shadow:rgb(0 0 0 / 8%) 3px 5px 14px 2px;
     }
     .open-button svg {
-      width: 30px;
+      width: 24px;
     }
     .userscom_body{
       background: rgb(255, 255, 255);
