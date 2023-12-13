@@ -1,8 +1,8 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 let ticketId;
 let projectDetails;
-// const BASE_URL = "http://127.0.0.1:8000";
-const BASE_URL = "https://app.userscom.com";
+const BASE_URL = "http://127.0.0.1:8000";
+// const BASE_URL = "https://app.userscom.com";
 
 
 // Define the custom element tag
@@ -15,7 +15,79 @@ function ChatBox() {
   // Create styles
   const styles = `
   
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+
+.tabs {
+  display: flex;
+  position: relative;
+  background-color: #ffffff4d;
+  box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15);
+  padding: 0rem;
+  border-radius: 99px;
+}
+.tabs * {
+  z-index: 2;
+}
+
+input[type=radio] {
+  display: none;
+}
+.past_tickets {
+  display:none;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 92px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: color 0.15s ease-in;
+}
+
+input[type=radio] + label {
+  color: #99acd2;
+}
+
+input[type=radio]:checked + label {
+  color: #185ee0;
+}
+
+
+input[id=radio-1]:checked ~ .glider {
+  transform: translateX(0);
+}
+
+input[id=radio-2]:checked ~ .glider {
+  transform: translateX(100%);
+}
+
+
+
+
+.glider {
+  position: absolute;
+  display: flex;
+  height: 30px;
+  width: 92px;
+  background-color: #ffffff;
+  z-index: 1;
+  border-radius: 99px;
+  transition: 0.25s ease-out;
+}
+
+@media (max-width: 700px) {
+  .tabs {
+    transform: scale(0.6);
+  }
+}
+
+
+
     /* Your styles go here */
     .open-button {
       background-color: #ffffffcc;
@@ -39,7 +111,7 @@ function ChatBox() {
       background: rgb(255, 255, 255);
       border-radius: 15px;
       box-shadow: rgba(100, 116, 139, 0.09) 0px 1px 13px;
-      margin: 7px;
+      margin: 0px 5px 5px 5px;
     }
     .welcomeMsgLeft{
       position: absolute;
@@ -81,16 +153,19 @@ function ChatBox() {
     }
 
     .userscom_header{
-      padding:0px 20px;
+      padding: 0px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     
 
     }
     .userscom_heading {
       font-size: 20px;
-      color:rgb(128 138 153);
+      color:rgb(51 80 142);
       font-weight: 600;
       font-family: 'Inter', sans-serif;
-      letter-spacing: -0.04px;
+      letter-spacing: -0.50px;
     }
     .chat-popup-left {
       align-items: start;
@@ -108,10 +183,10 @@ function ChatBox() {
     .form-container {
       display:none;
       max-width: 400px;
-      width:350px;
+      width:370px;
       position:relative;
       border-radius:20px;
-      background:linear-gradient(36deg, rgb(242, 246, 255), rgb(255 255 255));
+      background:linear-gradient(36deg, rgb(177 201 255), rgb(255 255 255));
       overflow: hidden;
     position: relative;
     box-shadow:rgba(0, 0, 0, 0.16) 0px 5px 40px;
@@ -146,7 +221,7 @@ function ChatBox() {
       align-items:center;
     }
   
-    .form-container input {
+    .form-container input[type="text"] {
       width: 50%;
       padding-left: 14px;
       padding-right: 20px;
@@ -257,7 +332,8 @@ function ChatBox() {
     right: 20px;
     position: absolute;
     top: 20px;
-    color:rgb(241 241 241);
+    cursor:pointer;
+    color:rgb(192 192 192);
   }
 
   #overlaySuccess {
@@ -343,6 +419,14 @@ function ChatBox() {
   document.body.append(parentDiv);
   const userscomRoot = parentDiv.attachShadow({ mode: 'open' });
 
+  const linkElement = document.createElement('link');
+linkElement.rel = 'stylesheet';
+linkElement.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap';
+
+// Append the link element to the shadow DOM root
+document.head.appendChild(linkElement);
+
+
   const styleElement = document.createElement('style');
   styleElement.textContent = styles;
 
@@ -413,15 +497,39 @@ function ChatBox() {
   var form = document.createElement("form");
   form.className = "form-container";
 
+
+
+
+
+
   var header = document.createElement("div");
   header.className="userscom_header"
   header.innerHTML="<h3 class='userscom_heading'>Message us</h3>"
+
+  
+
   form.appendChild(header)
+
+  
+
+  var tabs = document.createElement("div")
+  tabs.innerHTML = "<div class='tabs'><input type='radio' id='radio-1' name='tabs' checked /><label class='tab' for='radio-1'>New Ticket</label><input type='radio' id='radio-2' name='tabs' /><label class='tab' for='radio-2'>Past Tickets</label><span class='glider'></span></div>";
+  header.appendChild(tabs)
+  
+
+    
+ 
 
 
   var formbody = document.createElement("div");
   formbody.className="userscom_body"
   form.appendChild(formbody)
+
+  var pasttickets = document.createElement("div");
+  pasttickets.innerHTML="<h2>no ticket</h2>"
+  pasttickets.className="past_tickets"
+  form.appendChild(pasttickets)
+
 
 
   // Create textarea for message input
@@ -559,6 +667,22 @@ function ChatBox() {
   // document.body.appendChild(chatPopup);
 
   // Add event listeners
+
+  header.addEventListener('change', function (event) {
+    if (event.target.type === 'radio' && event.target.name === 'tabs') {
+        var selectedTab = event.target.id;
+        if(selectedTab==="radio-2"){
+            form.querySelector('.userscom_body').style.display="none"
+            form.querySelector('.past_tickets').style.display="block"
+        }else{
+          // new ticket
+          form.querySelector('.userscom_body').style.display="block"
+          form.querySelector('.past_tickets').style.display="none"
+        }
+        console.log('Selected tab:', selectedTab);
+    }
+});
+
   img.addEventListener("click", function () {
     
     if(form.style.display==='block'){
@@ -693,6 +817,12 @@ function ChatBox() {
                 }
             }
         });
+
+
+          
+       
+  
+      
 
         function handleFile(file) {
           const fileExtension = file.name.split('.').pop();
