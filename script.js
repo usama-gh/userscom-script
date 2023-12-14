@@ -1,7 +1,7 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 let ticketId;
 let projectDetails;
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "http://127.0.0.1:9000";
 // const BASE_URL = "https://app.userscom.com";
 
 
@@ -587,7 +587,8 @@ document.head.appendChild(linkElement);
   pasttickets.className="past_tickets"
   pasttickets.innerHTML = "";
   allTickets.map((ticket) => {
-    pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message||'-'+"</p></div></div><div></div></div></div>"
+    console.log('ticketReference...', ticket.ticketReference)
+    pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message+"</p></div><div class='custom-text-container'><a target='_blank' href='"+BASE_URL+"/ticket/conversation/"+ticket.ticketReference+"'>View</a></div></div><div></div></div></div>"
   })
 
     form.appendChild(pasttickets)
@@ -791,16 +792,16 @@ document.head.appendChild(linkElement);
           return response.json();
         })
         .then((data) => {
-          ticketId = data
+          ticketId = data.id
           const ticket = {
             id: ticketId,
             date: new Date().toString(),
             name: formData.get('name') || formData.get('email'),
-            message: formData.get('message')
+            message: formData.get('message'),
+            ticketReference: data.reference
           }
 
           var storedArray = JSON.parse(localStorage.getItem('allTickets')) || [];
-          console.log("storedArray...", storedArray)
           storedArray.push(ticket);
 
           localStorage.setItem('allTickets', JSON.stringify(storedArray))
@@ -909,7 +910,7 @@ document.head.appendChild(linkElement);
           pasttickets.className="past_tickets"
           pasttickets.innerHTML = "";
           allTickets.map((ticket) => {
-            pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message||'-'+"</p></div></div><div></div></div></div>"
+            pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message+"</p></div><div class='custom-text-container'><a target='_blank' href='"+BASE_URL+"/ticket/conversation/"+ticket.ticketReference+"'>View</a></div></div><div></div></div></div>"
           })
         
             form.appendChild(pasttickets)
