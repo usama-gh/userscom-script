@@ -1,7 +1,7 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 let ticketId;
 let projectDetails;
-const BASE_URL = "http://127.0.0.1:9000";
+const BASE_URL = "http://127.0.0.1:8000";
 // const BASE_URL = "https://app.userscom.com";
 
 
@@ -804,7 +804,7 @@ document.head.appendChild(linkElement);
           storedArray.push(ticket);
 
           localStorage.setItem('allTickets', JSON.stringify(storedArray))
-          updateTickets()
+      
 
           form.querySelector("#overlaySuccess").style.display = "flex";
 
@@ -825,6 +825,12 @@ document.head.appendChild(linkElement);
             overlaySuccessDiv.appendChild(waterMark);
           }
           sendButton.classList.remove("button--loading");
+          try {
+            updateTickets(form)
+          }catch(e){
+              console.log(e)
+          }
+        
           
         })
         .catch((error) => {
@@ -894,21 +900,33 @@ document.head.appendChild(linkElement);
 
 
           
-       function updateTickets()
+       function updateTickets(form)
        {
-          const form = document.getElementById('userscom-form');
+       
           const allTickets = JSON.parse(localStorage.getItem('allTickets')) || []
-            console.log('allTickets..', allTickets)
-            console.log("form..", form)
-            var pasttickets = form.getElementById("past_tickets");
-            console.log('pasttickets..', pasttickets)
-            // pasttickets.innerHTML = "";
-            allTickets.map((ticket) => {
-              pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message||'-'+"</p></div></div><div></div></div></div>"
-            })
-
+          var pasttickets = document.createElement("div");
+          pasttickets.id = "past_tickets"
+          pasttickets.className="past_tickets"
+          pasttickets.innerHTML = "";
+          allTickets.map((ticket) => {
+            pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message||'-'+"</p></div></div><div></div></div></div>"
+          })
+        
             form.appendChild(pasttickets)
-          console.log('form...', form)
+
+
+          // const allTickets = JSON.parse(localStorage.getItem('allTickets')) || []
+          //   console.log('allTickets..', allTickets)
+          //   console.log("form..", form)
+          //   var pasttickets = form.getElementById("past_tickets");
+          //   console.log('pasttickets..', pasttickets)
+          //   // pasttickets.innerHTML = "";
+          //   allTickets.map((ticket) => {
+          //     pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message||'-'+"</p></div></div><div></div></div></div>"
+          //   })
+
+          //   form.appendChild(pasttickets)
+          // console.log('form...', form)
        }
   
         function formatDateTimeForTicket (dateString) {
