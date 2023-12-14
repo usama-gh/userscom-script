@@ -1,7 +1,7 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 let ticketId;
 let projectDetails;
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "http://127.0.0.1:9000";
 // const BASE_URL = "https://app.userscom.com";
 
 
@@ -34,6 +34,18 @@ input[type=radio] {
 }
 .past_tickets {
   display:none;
+  background-color: white;
+  border-radius: 20px;
+  margin: 5px 10px;
+  padding: 5px;
+}
+
+.ticket-item{
+  background-color: white;
+  border-radius: 20px;
+  margin: 5px 10px;
+  padding: 5px 10px;
+  box-shadow: 0px 0px 15px 2px rgba(0,0,0,0.1);
 }
 
 .tab {
@@ -413,6 +425,50 @@ input[id=radio-2]:checked ~ .glider {
 
   .button--loading{color:transparent !important;} .button--loading::after { content: ""; position: absolute; width: 16px; height: 16px; top: 0; left: 0; right: 0; bottom: 0; margin: auto; border: 4px solid transparent; border-top-color: #7a8696; border-radius: 50%; animation: button-loading-spinner 1s ease infinite; } @keyframes button-loading-spinner { from { transform: rotate(0turn);}to {transform: rotate(1turn);}}
 
+  .custom-flex-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.custom-flex-items {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.custom-avatar-container {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #ccc;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.custom-text-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-message-text {
+    font-size: 1.5rem;
+}
+
+.custom-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-size: 1.2rem;
+    background-color: #4F46E5;
+    color: #fff;
+}
+
+.align-self-center{
+  align-self: center;
+}
+
+
   `;
   
   var parentDiv = document.createElement('div');
@@ -496,7 +552,7 @@ document.head.appendChild(linkElement);
   // Create form
   var form = document.createElement("form");
   form.className = "form-container";
-
+  form.id = "userscom-form";
 
 
 
@@ -524,13 +580,17 @@ document.head.appendChild(linkElement);
   var formbody = document.createElement("div");
   formbody.className="userscom_body"
   form.appendChild(formbody)
-
+  
+  const allTickets = JSON.parse(localStorage.getItem('allTickets')) || []
   var pasttickets = document.createElement("div");
-  pasttickets.innerHTML="<h2>no ticket</h2>"
+  pasttickets.id = "past_tickets"
   pasttickets.className="past_tickets"
-  form.appendChild(pasttickets)
+  pasttickets.innerHTML = "";
+  allTickets.map((ticket) => {
+    pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message||'-'+"</p></div></div><div></div></div></div>"
+  })
 
-
+    form.appendChild(pasttickets)
 
   // Create textarea for message input
   var fieldsWrapper = document.createElement("div");
@@ -732,6 +792,20 @@ document.head.appendChild(linkElement);
         })
         .then((data) => {
           ticketId = data
+          const ticket = {
+            id: ticketId,
+            date: new Date().toString(),
+            name: formData.get('name') || formData.get('email'),
+            message: formData.get('message')
+          }
+
+          var storedArray = JSON.parse(localStorage.getItem('allTickets')) || [];
+          console.log("storedArray...", storedArray)
+          storedArray.push(ticket);
+
+          localStorage.setItem('allTickets', JSON.stringify(storedArray))
+          updateTickets()
+
           form.querySelector("#overlaySuccess").style.display = "flex";
 
           successButton.style.backgroundColor='#78c27d'
@@ -820,9 +894,62 @@ document.head.appendChild(linkElement);
 
 
           
-       
+       function updateTickets()
+       {
+          const form = document.getElementById('userscom-form');
+          const allTickets = JSON.parse(localStorage.getItem('allTickets')) || []
+            console.log('allTickets..', allTickets)
+            console.log("form..", form)
+            var pasttickets = form.getElementById("past_tickets");
+            console.log('pasttickets..', pasttickets)
+            // pasttickets.innerHTML = "";
+            allTickets.map((ticket) => {
+              pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message||'-'+"</p></div></div><div></div></div></div>"
+            })
+
+            form.appendChild(pasttickets)
+          console.log('form...', form)
+       }
   
-      
+        function formatDateTimeForTicket (dateString) {
+          const currentDate = new Date();
+          let inputDate;
+          if (dateString && dateString != undefined) {
+            inputDate = new Date(dateString);
+          } else {
+            inputDate = new Date(currentDate);
+          }
+        
+          const options = {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          };
+        
+          if (
+            inputDate.getDate() === currentDate.getDate() &&
+            inputDate.getMonth() === currentDate.getMonth() &&
+            inputDate.getFullYear() === currentDate.getFullYear()
+          ) {
+            return `Today at ${inputDate.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+            })}`;
+          } else if (
+            inputDate.getDate() === currentDate.getDate() - 1 &&
+            inputDate.getMonth() === currentDate.getMonth() &&
+            inputDate.getFullYear() === currentDate.getFullYear()
+          ) {
+            return `Yesterday at ${inputDate.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+            })}`;
+          } else {
+            return inputDate.toLocaleDateString("en-US", options);
+          }
+        };
 
         function handleFile(file) {
           const fileExtension = file.name.split('.').pop();
