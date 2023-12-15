@@ -1,8 +1,8 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 let ticketId;
 let projectDetails;
-// const BASE_URL = "http://127.0.0.1:8000";
-const BASE_URL = "https://app.userscom.com";
+const BASE_URL = "http://127.0.0.1:8000";
+// const BASE_URL = "https://app.userscom.com";
 let userAttributes = {};
 document.addEventListener('updateUserAttributes', (event) => {
   userAttributes = event.detail;
@@ -626,7 +626,7 @@ document.head.appendChild(linkElement);
   }
 
   // Create form
-  var form = document.createElement("form");
+  var form = document.createElement("div");
   form.className = "form-container";
   form.id = "userscom-form";
 
@@ -653,7 +653,7 @@ document.head.appendChild(linkElement);
  
 
 
-  var formbody = document.createElement("div");
+  var formbody = document.createElement("form");
   formbody.className="userscom_body"
   form.appendChild(formbody)
   
@@ -854,10 +854,10 @@ document.head.appendChild(linkElement);
   });
 
  
-  form.addEventListener('submit', (event) => {
+  formbody.addEventListener('submit', (event) => {
     event.preventDefault();
-    const formData = new FormData(form);
-    const fileInput = form.querySelector('#fileInput');
+    const formData = new FormData(formbody);
+    const fileInput = formbody.querySelector('#fileInput');
     const file = fileInput ? fileInput.files[0] : null;
     if (file || uploadedFile) {
         formData.append('attachment', file || uploadedFile);
