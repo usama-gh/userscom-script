@@ -3,6 +3,26 @@ let ticketId;
 let projectDetails;
 // const BASE_URL = "http://127.0.0.1:8000";
 const BASE_URL = "https://app.userscom.com";
+let userAttributes = {};
+document.addEventListener('updateUserAttributes', (event) => {
+  userAttributes = event.detail;
+  console.log('userAttributes...', userAttributes)
+});
+const userscom = {
+  user: {
+    set(options) {
+      if (options) {
+        Object.assign(this, options);
+        console.log('User properties updated:', this);
+        const event = new CustomEvent('updateUserAttributes', { detail: this });
+        document.dispatchEvent(event);
+      } else {
+        console.error('No options provided');
+      }
+    }
+  }
+}
+
 
 
 // Define the custom element tag
@@ -833,7 +853,7 @@ document.head.appendChild(linkElement);
     
   });
 
-  let userAttributes = {};
+ 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     const formData = new FormData(form);
@@ -916,10 +936,7 @@ document.head.appendChild(linkElement);
        
   });
 
-  document.addEventListener('updateUserAttributes', (event) => {
-    userAttributes = event.detail;
-    console.log('userAttributes...', userAttributes)
-  });
+
 
   const dropAreaDiv = form.querySelector("#drop-area");
         const fileInput = form.querySelector("#fileInput");
@@ -1102,20 +1119,6 @@ document.head.appendChild(linkElement);
           }
 }
 
-const userscom = {
-  user: {
-    set(options) {
-      if (options) {
-        Object.assign(this, options);
-        console.log('User properties updated:', this);
-        const event = new CustomEvent('updateUserAttributes', { detail: this });
-        document.dispatchEvent(event);
-      } else {
-        console.error('No options provided');
-      }
-    }
-  }
-}
 
 fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((response) => {
   return response.json();
