@@ -1,8 +1,8 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 let ticketId;
 let projectDetails;
-const BASE_URL = "http://127.0.0.1:9000";
-// const BASE_URL = "https://app.userscom.com";
+// const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://app.userscom.com";
 
 
 // Define the custom element tag
@@ -20,9 +20,9 @@ function ChatBox() {
 .tabs {
   display: flex;
   position: relative;
-  background-color: #ffffff4d;
-  box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15);
-  padding: 0rem;
+  background-color: #517eea1f;
+  // box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15);
+  padding: 2px;
   border-radius: 99px;
 }
 .tabs * {
@@ -35,17 +35,20 @@ input[type=radio] {
 .past_tickets {
   display:none;
   background-color: white;
-  border-radius: 20px;
-  margin: 5px 10px;
+  border-radius: 15px;
+  margin: 0px 5px 5px 5px;
   padding: 5px;
+  max-height:341px;
+  overflow-y:auto;
+  min-height:341px;
 }
 
 .ticket-item{
   background-color: white;
-  border-radius: 20px;
-  margin: 5px 10px;
-  padding: 5px 10px;
-  box-shadow: 0px 0px 15px 2px rgba(0,0,0,0.1);
+  border-radius: 53px;
+  margin: 10px 4px;
+  padding: 8px 10px;
+  box-shadow: 0px 0px 8px 0px rgb(0 0 0 / 7%);
 }
 
 .tab {
@@ -62,11 +65,11 @@ input[type=radio] {
 }
 
 input[type=radio] + label {
-  color: #99acd2;
+  color: #7f8fb1;
 }
 
 input[type=radio]:checked + label {
-  color: #185ee0;
+  color: rgb(51 80 142);
 }
 
 
@@ -78,8 +81,25 @@ input[id=radio-2]:checked ~ .glider {
   transform: translateX(100%);
 }
 
+.ticket_time{
+  font-size:0.65rem;
+  color:#767676;
+}
 
 
+.viewticket_button{
+  font-size: 0.75rem;
+  background: #dbe6ff;
+  color: #33508e;
+  text-align: center;
+  padding: 6px 14px;
+  text-decoration: none;
+  transition:all 200ms ease-in;
+  border-radius: 50px;
+}
+.viewticket_button:hover{
+  background: #d1ddf7;
+}
 
 .glider {
   position: absolute;
@@ -215,13 +235,13 @@ input[id=radio-2]:checked ~ .glider {
     textarea {
       width: 100%;
      
-      color:#64748B;
+      color:rgb(51 80 142);
       border: none;
       font-family: 'Inter', sans-serif;
       background: transparent;
       
       resize: none;
-      min-height: 200px;
+      min-height: 250px;
       padding:20px;
     }
     
@@ -241,6 +261,7 @@ input[id=radio-2]:checked ~ .glider {
       padding-top:10px;
       padding-bottom:10px;
       outline:transparent;
+      color:rgb(51 80 142);
       border: none; 
       background: transparent;
       resize: none;
@@ -255,23 +276,28 @@ input[id=radio-2]:checked ~ .glider {
     /* Set a style for the submit/send button */
     .form-container .btn {
       position:relative;
-      background-color: #f3f7ff;
-    color: rgb(71, 89, 113);
+      background-color: rgb(221 232 255);
+    color: rgb(51 80 142);
     padding: 16px 20px;
     border: none;
-    font-weight: bold;
+    font-weight: 600 !important;
     cursor: pointer;
+    font-family: 'Inter', sans-serif;
     width: -webkit-fill-available;
     letter-spacing: -0.4px;
     background-clip: padding-box;
     margin: 7px 7px 7px;
     border-radius: 9px;
     transition: background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    column-gap:3px;
 
 
     }
    .btn:hover{
-      background-color:#ecf1f9;
+      background-color:rgb(213 225 248);
     }
 
     /* Add a red background color to the cancel button */
@@ -358,7 +384,7 @@ input[id=radio-2]:checked ~ .glider {
     width: 100%;
     inset: 0px;
     transition: 0.3s;
-    background: rgb(240, 255, 242);
+    background: #ffffff;
     z-index: 2;
     cursor: pointer;
     height: 100%;
@@ -369,12 +395,13 @@ input[id=radio-2]:checked ~ .glider {
   }
 
   #successTextHeading {
-     font-size: 42px;
+     font-size: 30px;
     font-family: 'Inter', sans-serif;
     margin-top: 5px;
      letter-spacing:-2px;
     margin-bottom: 5px;
     text-align: center;
+    font-weight:600;
   }
   #text {
     display: flex;
@@ -387,7 +414,8 @@ input[id=radio-2]:checked ~ .glider {
     font-size: 14px;
     margin-top: 5px;
     margin-bottom: 20px;
-    text-align: center
+    text-align: center;
+    font-weight:400;
   }
   .field-wrapper {
     display:flex;
@@ -428,32 +456,45 @@ input[id=radio-2]:checked ~ .glider {
   .custom-flex-container {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .custom-flex-items {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 0.6rem;
 }
 
 .custom-avatar-container {
-    width: 2.5rem;
-    height: 2.5rem;
-    background-color: #ccc;
+    width: 2rem;
+    height: 2rem;
+    background: linear-gradient(45deg, #fdfeff, #d8e4ff);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.0rem;
+    text-transform:uppercase;
+    color: #6290ff;
+    font-weight: 500;
 }
 
 .custom-text-container {
     display: flex;
     flex-direction: column;
+    row-gap: 2px;
+}
+
+.custom-text-container p {
+ margin:0px;
 }
 
 .custom-message-text {
-    font-size: 1.5rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 185px;
 }
 
 .custom-button {
@@ -467,6 +508,19 @@ input[id=radio-2]:checked ~ .glider {
 .align-self-center{
   align-self: center;
 }
+.info-message {
+  height:341px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #b1b1b1;
+  row-gap: 6px;
+}
+.info-text {
+font-weight:500;
+font-size:0.9rem;
+}
 
 
   `;
@@ -474,6 +528,8 @@ input[id=radio-2]:checked ~ .glider {
   var parentDiv = document.createElement('div');
   document.body.append(parentDiv);
   const userscomRoot = parentDiv.attachShadow({ mode: 'open' });
+
+  const style = document.createElement('style');
 
   const linkElement = document.createElement('link');
 linkElement.rel = 'stylesheet';
@@ -588,8 +644,12 @@ document.head.appendChild(linkElement);
   pasttickets.innerHTML = "";
   allTickets.map((ticket) => {
     console.log('ticketReference...', ticket.ticketReference)
-    pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message+"</p></div><div class='custom-text-container'><a target='_blank' href='"+BASE_URL+"/ticket/conversation/"+ticket.ticketReference+"'>View</a></div></div><div></div></div></div>"
+    pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p class='ticket_time'>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message+"</p></div><div class='custom-text-container'></div></div><div><a class='viewticket_button' target='_blank' href='"+BASE_URL+"/ticket/conversation/"+ticket.ticketReference+"'>View</a></div></div></div>"
   })
+  if(allTickets.length===0){
+    pasttickets.innerHTML='<div class="info-message"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-alert-circle"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg><span class="info-text">No tickets created</span></div>' 
+  }
+
 
     form.appendChild(pasttickets)
 
@@ -653,15 +713,17 @@ document.head.appendChild(linkElement);
   var sendButton = document.createElement("button");
   sendButton.type = "submit";
   sendButton.className = "btn";
-  sendButton.textContent = "Send";
+  sendButton.textContent = "Submit";
 
-  
+  var sendIcon=document.createElement("span")
+  sendIcon.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>'
+  sendButton.prepend(sendIcon)
   var waterMark = document.createElement("div");
   waterMark.className = "water-mark-container";
 
   var waterMarkText = document.createElement("p");
   waterMarkText.className = "water-mark-text";
-  waterMarkText.textContent = "Chat by Userscom";
+  waterMarkText.textContent = "Powered by Userscom";
   waterMark.appendChild(waterMarkText);
 
 
@@ -687,19 +749,21 @@ document.head.appendChild(linkElement);
 
 
 
-  var successTextHeading = document.createElement("h6");
-  successTextHeading.id = "successTextHeading";
-  successTextHeading.textContent = "Sent";
+
+
+  var successTextHeading = document.createElement("div");
+  successTextHeading.id="successTextHeading";
+  successTextHeading.innerHTML = '<span><svg width="337" height="295" viewBox="0 0 337 295" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M336.118 0L247.748 220.955L192.509 165.732L203.548 198.863L177.771 221.019V167.098L304.099 37.0535L162.158 141.782L82.0001 121.532L336.118 0Z" fill="url(#paint0_linear_920_25)"/><path d="M145.046 211.253L78.0581 261.935" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><path d="M110.051 165L43.0636 215.682" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><path d="M114.39 198.082L17.4973 271.39" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><defs><linearGradient id="paint0_linear_920_25" x1="209.059" y1="0" x2="209.059" y2="221.019" gradientUnits="userSpaceOnUse"><stop stop-color="#278EFF"/><stop offset="1" stop-color="#ABD3FF" stop-opacity="0.63"/></linearGradient></defs></svg></span><span>Ticket Sent</span>';
   overlaySuccessDivText.appendChild(successTextHeading);
 
   var successTextSubtitle = document.createElement("h6");
   successTextSubtitle.id = "successTextSubtitle";
-  successTextSubtitle.textContent = "You will hear back from us soon";
+  successTextSubtitle.textContent = "You will receive a response via email";
   overlaySuccessDivText.appendChild(successTextSubtitle);
 
   var successButton = document.createElement("a");
   successButton.id = "successButton";
-  successButton.textContent = "Send another";
+  successButton.textContent = "Edit ticket";
   overlaySuccessDivText.appendChild(successButton);
   
   overlaySuccessDiv.appendChild(overlaySuccessDivText);
@@ -802,18 +866,18 @@ document.head.appendChild(linkElement);
           }
 
           var storedArray = JSON.parse(localStorage.getItem('allTickets')) || [];
-          storedArray.push(ticket);
+          storedArray.unshift(ticket);
 
           localStorage.setItem('allTickets', JSON.stringify(storedArray))
       
 
           form.querySelector("#overlaySuccess").style.display = "flex";
 
-          successButton.style.backgroundColor='#78c27d'
-          successTextHeading.textContent='Sent'
-          successTextSubtitle.textContent='You will hear from us very soon'
-          overlaySuccessDiv.style.backgroundColor='rgb(234 255 237)';
-          overlaySuccessDivText.style.color='#78c27d';
+          successButton.style.backgroundColor='#2d2d2d'
+          successTextHeading.innerHTML = '<span><svg width="337" height="100" viewBox="0 0 337 295" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M336.118 0L247.748 220.955L192.509 165.732L203.548 198.863L177.771 221.019V167.098L304.099 37.0535L162.158 141.782L82.0001 121.532L336.118 0Z" fill="url(#paint0_linear_920_25)"/><path d="M145.046 211.253L78.0581 261.935" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><path d="M110.051 165L43.0636 215.682" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><path d="M114.39 198.082L17.4973 271.39" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><defs><linearGradient id="paint0_linear_920_25" x1="209.059" y1="0" x2="209.059" y2="221.019" gradientUnits="userSpaceOnUse"><stop stop-color="#278EFF"/><stop offset="1" stop-color="#ABD3FF" stop-opacity="0.63"/></linearGradient></defs></svg></span><span>Ticket Sent</span>';
+          successTextSubtitle.textContent = "You will receive a response via email";
+          overlaySuccessDiv.style.backgroundColor='#ffffff';
+          overlaySuccessDivText.style.color='#202020';
           
           // for (let i = 0; i < form.length; i++) {
           //     if (form[i].type !== "submit") {
@@ -905,29 +969,15 @@ document.head.appendChild(linkElement);
        {
        
           const allTickets = JSON.parse(localStorage.getItem('allTickets')) || []
-          var pasttickets = document.createElement("div");
-          pasttickets.id = "past_tickets"
-          pasttickets.className="past_tickets"
+          var pasttickets = form.querySelector('.past_tickets');
+
+         
           pasttickets.innerHTML = "";
           allTickets.map((ticket) => {
-            pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message+"</p></div><div class='custom-text-container'><a target='_blank' href='"+BASE_URL+"/ticket/conversation/"+ticket.ticketReference+"'>View</a></div></div><div></div></div></div>"
+            pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p class='ticket_time'>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message+"</p></div><div class='custom-text-container'></div></div><div><a class='viewticket_button' target='_blank' href='"+BASE_URL+"/ticket/conversation/"+ticket.ticketReference+"'>View</a></div></div></div>";
           })
         
-            form.appendChild(pasttickets)
-
-
-          // const allTickets = JSON.parse(localStorage.getItem('allTickets')) || []
-          //   console.log('allTickets..', allTickets)
-          //   console.log("form..", form)
-          //   var pasttickets = form.getElementById("past_tickets");
-          //   console.log('pasttickets..', pasttickets)
-          //   // pasttickets.innerHTML = "";
-          //   allTickets.map((ticket) => {
-          //     pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message||'-'+"</p></div></div><div></div></div></div>"
-          //   })
-
-          //   form.appendChild(pasttickets)
-          // console.log('form...', form)
+        
        }
   
         function formatDateTimeForTicket (dateString) {
