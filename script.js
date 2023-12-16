@@ -1,8 +1,8 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 let ticketId;
 let projectDetails;
-const BASE_URL = "http://127.0.0.1:8000";
-// const BASE_URL = "https://app.userscom.com";
+// const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://app.userscom.com";
 let userAttributes = {};
 document.addEventListener('updateUserAttributes', (event) => {
   userAttributes = event.detail;
