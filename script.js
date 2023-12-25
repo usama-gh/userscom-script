@@ -1,8 +1,10 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 let ticketId;
 let projectDetails;
-// const BASE_URL = "http://127.0.0.1:8000";
-const BASE_URL = "https://app.userscom.com";
+let responseData;
+
+const BASE_URL = "http://127.0.0.1:9000";
+// const BASE_URL = "https://app.userscom.com";
 let userAttributes = {};
 document.addEventListener('updateUserAttributes', (event) => {
   userAttributes = event.detail;
@@ -542,6 +544,11 @@ font-weight:500;
 font-size:0.9rem;
 }
 
+.responseCountHeading{
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
 
   `;
   
@@ -655,7 +662,6 @@ document.head.appendChild(linkElement);
 
   var formbody = document.createElement("form");
   formbody.className="userscom_body"
-  form.appendChild(formbody)
   
   const allTickets = JSON.parse(localStorage.getItem('allTickets')) || []
   var pasttickets = document.createElement("div");
@@ -664,7 +670,12 @@ document.head.appendChild(linkElement);
   pasttickets.innerHTML = "";
   allTickets.map((ticket) => {
     console.log('ticketReference...', ticket.ticketReference)
-    pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p class='ticket_time'>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message+"</p></div><div class='custom-text-container'></div></div><div><a class='viewticket_button' target='_blank' href='"+BASE_URL+"/ticket/conversation/"+ticket.ticketReference+"'>View</a></div></div></div>"
+    const responseCount = responseData?.responses?.filter(i => i.ticket_id == ticket.id)?.length;
+
+    const responseSpan = responseCount && responseCount > 0 ? "<span>" + responseCount + "</span>" : "";
+
+    pasttickets.innerHTML += "<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'>" + responseSpan + "<div class='custom-avatar-container'>" + ticket.name.charAt(0) + "</div><div class='custom-text-container'><p class='ticket_time'>" + formatDateTimeForTicket(ticket.date) + "</p><p class='custom-message-text'>" + ticket.message + "</p></div><div class='custom-text-container'></div></div><div><a class='viewticket_button' target='_blank' href='" + BASE_URL + "/ticket/conversation/" + ticket.ticketReference + "'>View</a></div></div></div>";
+
   })
   if(allTickets.length===0){
     pasttickets.innerHTML='<div class="info-message"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-alert-circle"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg><span class="info-text">No tickets created</span></div>' 
@@ -676,6 +687,17 @@ document.head.appendChild(linkElement);
   // Create textarea for message input
   var fieldsWrapper = document.createElement("div");
   fieldsWrapper.className="field-wrapper"
+  const responseCount = responseData?.responses?.length
+  console.log("responseCount...", responseCount)
+  var responseWrapper = document.createElement("div");
+  responseWrapper.className = "responseCount";
+  responseWrapper.innerHTML = "<h5 class='responseCountHeading'>You've "+responseCount+" new replies</h5>";
+
+  if(responseCount && responseCount > 0)
+  {
+    form.appendChild(responseWrapper)
+  }
+  form.appendChild(formbody)
 
   var textarea = document.createElement("textarea");
   textarea.placeholder = "Type your message..";
@@ -1119,6 +1141,19 @@ document.head.appendChild(linkElement);
           }
 }
 
+const allTickets = JSON.parse(localStorage.getItem('allTickets')) || [];
+const ticketIds = allTickets.filter(ticket => ticket.id !== undefined).map(i => i.id);
+console.log("Filtered Tickets...", reference, ticketIds);
+
+fetch(BASE_URL+"/api/unseen-tickets-count/"+reference+"/"+ticketIds, { method: 'GET' }).then((response) => {
+  return response.json();
+})
+.then((data) => {
+  responseData = data
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
 
 fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((response) => {
   return response.json();
@@ -1130,6 +1165,7 @@ fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((respo
 .catch((error) => {
   console.error('Error:', error);
 });
+
 
 // Automatically add chat component when the page is completely loaded
 document.addEventListener("DOMContentLoaded", function () {
