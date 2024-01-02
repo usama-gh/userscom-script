@@ -1181,7 +1181,7 @@ const allTickets = JSON.parse(localStorage.getItem('allTickets')) || [];
 const ticketIds = allTickets.filter(ticket => ticket.id !== undefined).map(i => i.id);
 console.log("Filtered Tickets...", reference, ticketIds);
 
-if(reference && ticketIds)
+if(reference && ticketIds && ticketIds?.length > 0)
 {
   fetch(BASE_URL+"/api/unseen-tickets-count/"+reference+"/"+ticketIds, { method: 'GET' }).then((response) => {
     return response.json();
