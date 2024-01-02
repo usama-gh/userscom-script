@@ -1,6 +1,8 @@
 const reference = document.getElementById("userscom-chat").getAttribute("data-reference");
 let ticketId;
 let projectDetails;
+let responseData;
+
 // const BASE_URL = "http://127.0.0.1:8000";
 const BASE_URL = "https://app.userscom.com";
 let userAttributes = {};
@@ -67,6 +69,7 @@ input[type=radio] {
   background-color: white;
   border-radius: 53px;
   margin: 10px 4px;
+  position:relative;
   padding: 8px 10px;
   box-shadow: 0px 0px 8px 0px rgb(0 0 0 / 7%);
 }
@@ -160,6 +163,7 @@ input[id=radio-2]:checked ~ .glider {
       width: 24px;
     }
     .userscom_body{
+      position:relative;
       background: rgb(255, 255, 255);
       border-radius: 15px;
       box-shadow: rgba(100, 116, 139, 0.09) 0px 1px 13px;
@@ -168,15 +172,15 @@ input[id=radio-2]:checked ~ .glider {
     .welcomeMsgLeft{
       position: absolute;
       bottom: 40px;
-      left: 0px;
+      right: 10px;
       background: rgba(255, 255, 255, 0.62);
-      transform: translateX(75%);
+      transform: translateX(100%);
       padding: 4px 8px 4px 8px;
       font-size: 13px;
       backdrop-filter: blur(7px);
       width: max-content;
       border-radius: 55px 55px 55px 1px;
-      border:1.5px solid rgb(0 0 0 / 11%);
+      border: 1.5px solid rgb(0 0 0 / 11%);
     }
     .welcomeMsg {
       position: absolute;
@@ -201,7 +205,7 @@ input[id=radio-2]:checked ~ .glider {
       right: 15px;
       z-index: 9999999;
       flex-direction: column;
-      row-gap:0.025rem;
+      row-gap:0.55rem;
     }
 
     .userscom_header{
@@ -228,7 +232,7 @@ input[id=radio-2]:checked ~ .glider {
       left: 15px;
       z-index: 9999999;
       flex-direction: column;
-      row-gap:0.025rem;
+      row-gap:0.55rem;
     }
 
     /* Add styles to the form container */
@@ -488,6 +492,7 @@ input[id=radio-2]:checked ~ .glider {
 .custom-avatar-container {
     width: 2rem;
     height: 2rem;
+    position:relative;
     background: linear-gradient(45deg, #fdfeff, #d8e4ff);
     border-radius: 50%;
     display: flex;
@@ -517,6 +522,17 @@ input[id=radio-2]:checked ~ .glider {
     width: 185px;
 }
 
+.redCounter{
+  position: absolute;
+    right: 0px;
+    z-index:1;
+    top: -8px;
+    background: #ff2727;
+    padding: 3px 6px;
+    border-radius: 34px;
+    color: #fff;
+    font-size: 9px;
+}
 .custom-button {
     padding: 0.75rem 1.5rem;
     border-radius: 999px;
@@ -541,7 +557,24 @@ input[id=radio-2]:checked ~ .glider {
 font-weight:500;
 font-size:0.9rem;
 }
+.responseCount{
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  top: -3%;
+}
+.responseCountHeading{
+  padding: 4px 10px;
+  margin:0px;
+  text-align: center;
+  font-weight: 300;
+  font-size: 11px;
+  background: #517eea;
+  box-shadow:1px 1px 7px #00000036;
+  color: #fff;
+  border-radius: 20px;
 
+}
 
   `;
   
@@ -645,6 +678,7 @@ document.head.appendChild(linkElement);
   
 
   var tabs = document.createElement("div")
+  tabs.style.position='relative';
   tabs.innerHTML = "<div class='tabs'><input type='radio' id='radio-1' name='tabs' checked /><label class='tab' for='radio-1'>New Ticket</label><input type='radio' id='radio-2' name='tabs' /><label class='tab' for='radio-2'>Past Tickets</label><span class='glider'></span></div>";
   header.appendChild(tabs)
   
@@ -655,7 +689,6 @@ document.head.appendChild(linkElement);
 
   var formbody = document.createElement("form");
   formbody.className="userscom_body"
-  form.appendChild(formbody)
   
   const allTickets = JSON.parse(localStorage.getItem('allTickets')) || []
   var pasttickets = document.createElement("div");
@@ -664,7 +697,12 @@ document.head.appendChild(linkElement);
   pasttickets.innerHTML = "";
   allTickets.map((ticket) => {
     console.log('ticketReference...', ticket.ticketReference)
-    pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p class='ticket_time'>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message+"</p></div><div class='custom-text-container'></div></div><div><a class='viewticket_button' target='_blank' href='"+BASE_URL+"/ticket/conversation/"+ticket.ticketReference+"'>View</a></div></div></div>"
+    const responseCount = responseData?.responses?.filter(i => i.ticket_id == ticket.id)?.length;
+
+    const responseSpan = responseCount && responseCount > 0 ? "<span class='redCounter'>" + responseCount + "</span>" : "";
+
+    pasttickets.innerHTML += "<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>" + responseSpan + "" + ticket.name.charAt(0) + "</div><div class='custom-text-container'><p class='ticket_time'>" + formatDateTimeForTicket(ticket.date) + "</p><p class='custom-message-text'>" + ticket.message + "</p></div><div class='custom-text-container'></div></div><div><a class='viewticket_button' target='_blank' href='" + BASE_URL + "/ticket/conversation/" + ticket.ticketReference + "'>View</a></div></div></div>";
+
   })
   if(allTickets.length===0){
     pasttickets.innerHTML='<div class="info-message"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-alert-circle"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg><span class="info-text">No tickets created</span></div>' 
@@ -676,6 +714,26 @@ document.head.appendChild(linkElement);
   // Create textarea for message input
   var fieldsWrapper = document.createElement("div");
   fieldsWrapper.className="field-wrapper"
+  const responseCount = responseData?.responses?.length
+  console.log("responseCount...", responseCount)
+  var responseWrapper = document.createElement("div");
+  responseWrapper.className = "responseCount";
+  if(responseCount > 1){
+    responseWrapper.innerHTML = "<h5 class='responseCountHeading'>You've "+responseCount+" new replies</h5>";
+  }else{
+    responseWrapper.innerHTML = "<h5 class='responseCountHeading'>You've "+responseCount+" new reply</h5>";
+  }
+ 
+
+  var counterInTab = document.createElement("span");
+  counterInTab.innerHTML = "<span class='redCounter'>"+responseCount+"</span>";
+
+  tabs.appendChild(counterInTab)
+  if(responseCount && responseCount > 0)
+  {
+    formbody.appendChild(responseWrapper)
+  }
+  form.appendChild(formbody)
 
   var textarea = document.createElement("textarea");
   textarea.placeholder = "Type your message..";
@@ -1119,17 +1177,37 @@ document.head.appendChild(linkElement);
           }
 }
 
+const allTickets = JSON.parse(localStorage.getItem('allTickets')) || [];
+const ticketIds = allTickets.filter(ticket => ticket.id !== undefined).map(i => i.id);
+console.log("Filtered Tickets...", reference, ticketIds);
 
-fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((response) => {
-  return response.json();
-})
-.then((data) => {
-  localStorage.setItem("userscomPlan", data.plan)
-  projectDetails = data
-})
-.catch((error) => {
-  console.error('Error:', error);
-});
+if(reference && ticketIds)
+{
+  fetch(BASE_URL+"/api/unseen-tickets-count/"+reference+"/"+ticketIds, { method: 'GET' }).then((response) => {
+    return response.json();
+  })
+  .then((data) => {
+    responseData = data
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+
+if(reference)
+{
+  fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((response) => {
+    return response.json();
+  })
+  .then((data) => {
+    localStorage.setItem("userscomPlan", data.plan)
+    projectDetails = data
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+
 
 // Automatically add chat component when the page is completely loaded
 document.addEventListener("DOMContentLoaded", function () {
