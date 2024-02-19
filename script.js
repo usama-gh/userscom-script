@@ -699,7 +699,7 @@ document.head.appendChild(linkElement);
     console.log('ticketReference...', ticket.ticketReference)
     const responseCount = responseData?.responses?.filter(i => i.ticket_id == ticket.id)?.length;
 
-    const responseSpan = responseCount && responseCount > 0 ? "<span class='redCounter'>" + (responseCount || 0) + "</span>" : "";
+    const responseSpan = responseCount && responseCount > 0 ? "<span class='redCounter'>" + (responseCount != undefined ? responseCount : 0) + "</span>" : "";
     pasttickets.innerHTML += "<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>" + responseSpan + "" + ticket.name.charAt(0) + "</div><div class='custom-text-container'><p class='ticket_time'>" + formatDateTimeForTicket(ticket.date) + "</p><p class='custom-message-text'>" + ticket.message + "</p></div><div class='custom-text-container'></div></div><div><a class='viewticket_button' target='_blank' href='" + BASE_URL + "/ticket/conversation/" + ticket.ticketReference + "'>View</a></div></div></div>";
 
   })
