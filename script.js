@@ -3,8 +3,8 @@ let ticketId;
 let projectDetails;
 let responseData;
 
-const BASE_URL = "http://127.0.0.1:9000";
-// const BASE_URL = "https://app.userscom.com";
+// const BASE_URL = "http://127.0.0.1:9000";
+const BASE_URL = "https://app.userscom.com";
 let userAttributes = {};
 document.addEventListener('updateUserAttributes', (event) => {
   userAttributes = event.detail;
