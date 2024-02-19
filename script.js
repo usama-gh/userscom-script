@@ -3,8 +3,8 @@ let ticketId;
 let projectDetails;
 let responseData;
 
-// const BASE_URL = "http://127.0.0.1:8000";
-const BASE_URL = "https://app.userscom.com";
+const BASE_URL = "http://127.0.0.1:9000";
+// const BASE_URL = "https://app.userscom.com";
 let userAttributes = {};
 document.addEventListener('updateUserAttributes', (event) => {
   userAttributes = event.detail;
@@ -698,7 +698,7 @@ document.head.appendChild(linkElement);
   allTickets.map((ticket) => {
     console.log('ticketReference...', ticket.ticketReference)
     const responseCount = responseData?.responses?.filter(i => i.ticket_id == ticket.id)?.length;
-    console.log("responseCount...", responseCount)
+    // console.log("responseCount...", responseCount && responseCount != undefined)
     const responseSpan = responseCount && responseCount > 0 ? "<span class='redCounter'>" + (responseCount && responseCount != undefined ? responseCount : 0) + "</span>" : "";
     pasttickets.innerHTML += "<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>" + responseSpan + "" + ticket.name.charAt(0) + "</div><div class='custom-text-container'><p class='ticket_time'>" + formatDateTimeForTicket(ticket.date) + "</p><p class='custom-message-text'>" + ticket.message + "</p></div><div class='custom-text-container'></div></div><div><a class='viewticket_button' target='_blank' href='" + BASE_URL + "/ticket/conversation/" + ticket.ticketReference + "'>View</a></div></div></div>";
 
@@ -714,7 +714,7 @@ document.head.appendChild(linkElement);
   var fieldsWrapper = document.createElement("div");
   fieldsWrapper.className="field-wrapper"
   const responseCount = responseData?.responses?.length
-  console.log("responseCount...", responseCount)
+  
   var responseWrapper = document.createElement("div");
   responseWrapper.className = "responseCount";
   if(responseCount > 1){
@@ -725,7 +725,7 @@ document.head.appendChild(linkElement);
  
 
   var counterInTab = document.createElement("span");
-  counterInTab.innerHTML = "<span class='redCounter'>"+responseCount+"</span>";
+  counterInTab.innerHTML = "<span class='redCounter'>"+(responseCount||0)+"</span>";
 
   tabs.appendChild(counterInTab)
   if(responseCount && responseCount > 0)
