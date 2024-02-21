@@ -725,7 +725,10 @@ document.head.appendChild(linkElement);
  
 
   var counterInTab = document.createElement("span");
-  counterInTab.innerHTML = "<span class='redCounter'>"+(responseCount||0)+"</span>";
+  if(responseCount > 0)
+  {
+    counterInTab.innerHTML = "<span class='redCounter'>"+(responseCount||0)+"</span>"; 
+  }
 
   tabs.appendChild(counterInTab)
   if(responseCount && responseCount > 0)
