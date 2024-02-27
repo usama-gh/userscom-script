@@ -1181,8 +1181,6 @@ document.head.appendChild(linkElement);
 
 const allTickets = JSON.parse(localStorage.getItem('allTickets')) || [];
 const ticketIds = allTickets.filter(ticket => ticket.id !== undefined).map(i => i.id);
-console.log("Filtered Tickets...", reference, ticketIds);
-
 if(reference && ticketIds && ticketIds?.length > 0)
 {
   fetch(BASE_URL+"/api/unseen-tickets-count/"+reference+"/"+ticketIds, { method: 'GET' }).then((response) => {
@@ -1196,28 +1194,15 @@ if(reference && ticketIds && ticketIds?.length > 0)
   });
 }
 
-if(reference)
-{
-  fetch(BASE_URL+"/api/project/details/"+reference, { method: 'GET' }).then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    localStorage.setItem("userscomPlan", data.plan)
-    projectDetails = data
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
-}
-
-
-// Automatically add chat component when the page is completely loaded
-document.addEventListener("DOMContentLoaded", function () {
-  if (!document.querySelector("chat-box")) {
-    setTimeout(() => {
+if (reference) {
+  fetch(`${BASE_URL}/api/project/details/${reference}`, { method: 'GET' })
+    .then(response => response.json())
+    .then(data => {
+      localStorage.setItem("userscomPlan", data.plan);
+      projectDetails = data;
       ChatBox();
-    }, 1000)
-    
-  }
-  
-});
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
