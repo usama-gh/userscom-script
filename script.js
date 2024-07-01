@@ -8,7 +8,6 @@ const BASE_URL = "https://app.userscom.com";
 let userAttributes = {};
 document.addEventListener('updateUserAttributes', (event) => {
   userAttributes = event.detail;
-  console.log('userAttributes...', userAttributes)
 });
 const userscom = {
   user: {
@@ -1200,6 +1199,7 @@ if (reference) {
     .then(data => {
       localStorage.setItem("userscomPlan", data.plan);
       projectDetails = data;
+      console.log("projectDetails..", projectDetails)
       ChatBox();
     })
     .catch(error => {
