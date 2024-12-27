@@ -692,37 +692,6 @@ document.head.appendChild(linkElement);
 
 //   form.appendChild(header)
 
-  
-
-  var tabs = document.createElement("div")
-  tabs.style.position='relative';
-  tabs.innerHTML = "<div class='tabs'><input type='radio' id='radio-1' name='tabs' checked /><label class='tab' for='radio-1'>New Ticket</label><input type='radio' id='radio-2' name='tabs' /><label class='tab' for='radio-2'>Past Tickets</label><span class='glider'></span></div>";
-  header.appendChild(tabs)
-  
-
-    
- 
-
-
-  var formbody = document.createElement("form");
-  formbody.className="userscom_body"
-  
-  const allTickets = JSON.parse(localStorage.getItem('allTickets')) || []
-  var pasttickets = document.createElement("div");
-  pasttickets.id = "past_tickets"
-  pasttickets.className="past_tickets"
-  pasttickets.innerHTML = "";
-  allTickets.map((ticket) => {
-    console.log('ticketReference...', ticket.ticketReference)
-    const responseCount = responseData?.responses?.filter(i => i.ticket_id == ticket.id)?.length;
-    // console.log("responseCount...", responseCount && responseCount != undefined)
-    const responseSpan = responseCount && responseCount > 0 ? "<span class='redCounter'>" + (responseCount && responseCount != undefined ? responseCount : 0) + "</span>" : "";
-    pasttickets.innerHTML += "<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>" + responseSpan + "" + ticket.name.charAt(0) + "</div><div class='custom-text-container'><p class='ticket_time'>" + formatDateTimeForTicket(ticket.date) + "</p><p class='custom-message-text'>" + ticket.message + "</p></div><div class='custom-text-container'></div></div><div><a class='viewticket_button' target='_blank' href='" + BASE_URL + "/ticket/conversation/" + ticket.ticketReference + "'>View</a></div></div></div>";
-
-  })
-  if(allTickets.length===0){
-    pasttickets.innerHTML='<div class="info-message"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-alert-circle"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg><span class="info-text">No tickets created</span></div>' 
-  }
 
 
     // form.appendChild(pasttickets)
@@ -746,13 +715,6 @@ document.head.appendChild(linkElement);
   {
     counterInTab.innerHTML = "<span class='redCounter'>"+(responseCount||0)+"</span>"; 
   }
-
-  tabs.appendChild(counterInTab)
-  if(responseCount && responseCount > 0)
-  {
-    formbody.appendChild(responseWrapper)
-  }
-//   form.appendChild(formbody)
 
   var textarea = document.createElement("textarea");
   textarea.placeholder = "Type your message..";
@@ -799,8 +761,7 @@ document.head.appendChild(linkElement);
     </svg>
   `;
 
-  formbody.appendChild(textAreaWrapper)
-
+  
   // Append the input and label elements to the shadow root
   attachmentContainer.appendChild(inputFile);
   textAreaWrapper.appendChild(attachmentContainer);
@@ -826,12 +787,6 @@ document.head.appendChild(linkElement);
 
   // Append elements to form
 
-  formbody.appendChild(dropArea);
-  formbody.appendChild(fieldsWrapper)
-
-  // form.appendChild(nameInput);
-  // form.appendChild(emailInput);
-  formbody.appendChild(sendButton);
   
  
   // form.appendChild(closeButton);
@@ -907,89 +862,6 @@ document.head.appendChild(linkElement);
     }
   });
 
-
- 
-  formbody.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const formData = new FormData(formbody);
-    const fileInput = formbody.querySelector('#fileInput');
-    const file = fileInput ? fileInput.files[0] : null;
-    if (file || uploadedFile) {
-        formData.append('attachment', file || uploadedFile);
-    }
-
-    if(userAttributes)
-    {
-      formData.append('user_attributes', JSON.stringify(userAttributes))
-    }
-    const endPoint = ticketId && ticketId != undefined ? BASE_URL+"/edit/ticket/"+ticketId : BASE_URL+"/add/ticket/"+reference;
-    sendButton.classList.add("button--loading");
-    fetch(endPoint, {
-            method: 'POST',
-            body: formData,
-        }).then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          ticketId = data.id
-          const ticket = {
-            id: ticketId,
-            date: new Date().toString(),
-            name: formData.get('name') || formData.get('email'),
-            message: formData.get('message'),
-            ticketReference: data.reference
-          }
-
-          var storedArray = JSON.parse(localStorage.getItem('allTickets')) || [];
-          storedArray.unshift(ticket);
-
-          localStorage.setItem('allTickets', JSON.stringify(storedArray))
-      
-
-          form.querySelector("#overlaySuccess").style.display = "flex";
-
-          successButton.style.backgroundColor='#2d2d2d'
-          successTextHeading.innerHTML = '<span><svg width="337" height="100" viewBox="0 0 337 295" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M336.118 0L247.748 220.955L192.509 165.732L203.548 198.863L177.771 221.019V167.098L304.099 37.0535L162.158 141.782L82.0001 121.532L336.118 0Z" fill="url(#paint0_linear_920_25)"/><path d="M145.046 211.253L78.0581 261.935" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><path d="M110.051 165L43.0636 215.682" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><path d="M114.39 198.082L17.4973 271.39" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><defs><linearGradient id="paint0_linear_920_25" x1="209.059" y1="0" x2="209.059" y2="221.019" gradientUnits="userSpaceOnUse"><stop stop-color="#278EFF"/><stop offset="1" stop-color="#ABD3FF" stop-opacity="0.63"/></linearGradient></defs></svg></span><span>Ticket Sent</span>';
-          successTextSubtitle.textContent = "You will receive a response via email";
-          overlaySuccessDiv.style.backgroundColor='#ffffff';
-          overlaySuccessDivText.style.color='#202020';
-          
-          // for (let i = 0; i < form.length; i++) {
-          //     if (form[i].type !== "submit") {
-          //         form[i].value = "";
-          //     }
-          // }
-          
-          if(localStorage.getItem('userscomPlan') && localStorage.getItem('userscomPlan') == 0)
-          {
-            overlaySuccessDiv.appendChild(waterMark);
-          }
-          sendButton.classList.remove("button--loading");
-          try {
-            updateTickets(form)
-          }catch(e){
-              console.log(e)
-          }
-        
-          
-        })
-        .catch((error) => {
-          // Handle any errors that occurred during the fetch
-          form.querySelector("#overlaySuccess").style.display = "flex";
-          successButton.style.backgroundColor='#ff8282'
-          successTextHeading.textContent='Error'
-          successTextSubtitle.textContent='Something went wrong. Try again later.'
-          overlaySuccessDiv.style.backgroundColor='rgb(255 234 239)';
-          overlaySuccessDivText.style.color='#ff8282';
-          if(localStorage.getItem('userscomPlan') && localStorage.getItem('userscomPlan') == 0)
-          {
-            overlaySuccessDiv.appendChild(waterMark);
-          }
-          sendButton.classList.remove("button--loading");
-        });
-
-       
-  });
 
 }
 
