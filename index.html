@@ -1,120 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Real Estate Website</title>
-    <!-- Add Bootstrap CSS CDN link -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-  </head>
-  <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Real Estate</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="ml-auto navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#home"
-              >Home <span class="sr-only">(current)</span></a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#properties">Properties</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#contact">Contact</a>
-          </li>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Services</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Header Section -->
+  <header class="bg-blue-600 text-white py-6">
+    <div class="container mx-auto flex justify-between items-center px-4">
+      <h1 class="text-2xl font-bold">NexSoft Labs</h1>
+      <nav>
+        <ul class="flex space-x-6">
+          <li><a href="#services" class="hover:text-gray-300">Services</a></li>
+          <li><a href="#about" class="hover:text-gray-300">About</a></li>
+          <li><a href="#contact" class="hover:text-gray-300">Contact</a></li>
         </ul>
-      </div>
-    </nav>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="text-center jumbotron">
-      <div class="container">
-        <h1 class="display-4">Welcome to Our Real Estate Website</h1>
-        <p class="lead">Find your dream home with us.</p>
-        <a href="#properties" class="btn btn-primary btn-lg">View Properties</a>
-      </div>
-    </section>
+  <!-- Hero Section -->
+  <section class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-4xl font-bold mb-4">We Build Scalable Software Solutions</h2>
+      <p class="text-lg text-gray-700 mb-6">Offering cutting-edge web and mobile app development, AI services, and consulting to take your business to the next level.</p>
+      <a href="#services" class="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700">Explore Our Services</a>
+    </div>
+  </section>
 
-    <!-- Properties Section -->
-    <section id="properties" class="container">
-      <h2 class="text-center">Featured Properties</h2>
-      <div class="row">
-        <!-- Property Card 1 -->
-        <div class="col-md-4">
-          <div class="mb-4 card">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWW4QqQXF6En22RjIbUnWM9Lp7tBeqUwdwWX2TTMD1&s" class="card-img-top" alt="Property 1" />
-            <div class="card-body">
-              <h5 class="card-title">Luxury Villa</h5>
-              <p class="card-text">
-                Beautiful 4-bedroom villa with a stunning view.
-              </p>
-              <a href="#" class="btn btn-primary">View Details</a>
-            </div>
-          </div>
+  <!-- Services Section -->
+  <section id="services" class="py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h3 class="text-3xl font-bold mb-8">Our Services</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white shadow-md rounded-md p-6">
+          <h4 class="text-xl font-bold mb-2">Web Development</h4>
+          <p class="text-gray-600">Custom websites and applications tailored to your business needs.</p>
         </div>
-        <!-- Property Card 2 -->
-        <div class="col-md-4">
-          <div class="mb-4 card">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWW4QqQXF6En22RjIbUnWM9Lp7tBeqUwdwWX2TTMD1&s" class="card-img-top" alt="Property 2" />
-            <div class="card-body">
-              <h5 class="card-title">Modern Apartment</h5>
-              <p class="card-text">
-                Spacious apartment in the heart of the city.
-              </p>
-              <a href="#" class="btn btn-primary">View Details</a>
-            </div>
-          </div>
+        <div class="bg-white shadow-md rounded-md p-6">
+          <h4 class="text-xl font-bold mb-2">Mobile App Development</h4>
+          <p class="text-gray-600">Native and cross-platform apps that deliver seamless user experiences.</p>
         </div>
-        <!-- Property Card 3 -->
-        <div class="col-md-4">
-          <div class="mb-4 card">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWW4QqQXF6En22RjIbUnWM9Lp7tBeqUwdwWX2TTMD1&s" class="card-img-top" alt="Property 3" />
-            <div class="card-body">
-              <h5 class="card-title">Cozy Cottage</h5>
-              <p class="card-text">Charming cottage with a lovely garden.</p>
-              <a href="#" class="btn btn-primary">View Details</a>
-            </div>
-          </div>
+        <div class="bg-white shadow-md rounded-md p-6">
+          <h4 class="text-xl font-bold mb-2">AI & Consulting</h4>
+          <p class="text-gray-600">Leverage artificial intelligence to optimize your workflows and strategies.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-5 bg-light">
-      <div class="container">
-        <h2 class="text-center">Contact Us</h2>
-        <div id="userscom-form"></div>
-      </div>
-    </section>
-    <!-- <div id="parentDiv"></div> -->
-    <!-- Add Bootstrap JS CDN link -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </body>
+  <!-- About Section -->
+  <section id="about" class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h3 class="text-3xl font-bold mb-8">About Us</h3>
+      <p class="text-gray-700 text-lg max-w-3xl mx-auto">At NexSoft Labs, we are passionate about technology and innovation. With years of experience in software development, we help businesses unlock their full potential through scalable and efficient solutions.</p>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h3 class="text-3xl font-bold mb-8">Get in Touch</h3>
+      <p class="text-gray-700 mb-6">Have a project in mind? Let’s work together to bring your ideas to life.</p>
+      <form action="#" method="POST" class="max-w-md mx-auto">
+        <div class="mb-4">
+          <input type="text" name="name" placeholder="Your Name" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600">
+        </div>
+        <div class="mb-4">
+          <input type="email" name="email" placeholder="Your Email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600">
+        </div>
+        <div class="mb-4">
+          <textarea name="message" placeholder="Your Message" rows="4" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"></textarea>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-blue-600 text-white py-4">
+    <div class="container mx-auto text-center">
+      <p>&copy; 2024 NexSoft Labs. All Rights Reserved.</p>
+    </div>
+  </footer>
+</body>
 </html>
+<script src='script.js' id='userscom-chat' data-reference='64e5f42455564'></script>
 
-<!-- <script src='./script.js' id='userscom-chat' data-reference='66756f100cba5'></script> -->
-<script src='https://assets.userscom.com/script.js' id='userscom-chat' data-reference='66756d786411b'></script>
-
-<!-- </div> <script id="userscom-chat" data-reference="64e5f42455564" data-fields='[ "name", "phone", "email", "message", "attachment" ]' src="./styled-form-script.js"> </script> -->
-
-<!-- <script src="https://cdn.jsdelivr.net/gh/usama-gh/userscom-script@main/script.js" id='userscom-chat' data-reference='64e5f42455564' data-image='https://d2lxi8n1hvnzdg.cloudfront.net/local/profile/65119ab1b8b52.png'></script> -->
-
-<!-- <script id="userscom-chat" data-reference="64e5f42455564" data-fields='[ "name", "phone", "email", "message", "attachment" ]' src="./styled-form-script.js"> </script> -->
+<script>
+userscom.user.set({department: 'tech', lang: 'js'})
+</script>

@@ -3,12 +3,11 @@ let ticketId;
 let projectDetails;
 let responseData;
 
-const BASE_URL = "http://127.0.0.1:9000";
-// const BASE_URL = "https://app.userscom.com";
+// const BASE_URL = "http://127.0.0.1:9000";
+const BASE_URL = "https://app.userscom.com";
 let userAttributes = {};
 document.addEventListener('updateUserAttributes', (event) => {
   userAttributes = event.detail;
-  console.log('userAttributes...', userAttributes)
 });
 const userscom = {
   user: {
@@ -30,6 +29,7 @@ const userscom = {
 // Define the custom element tag
 function ChatBox() {
 
+  console.log('projectDetails...', projectDetails)
   const welcomeText = projectDetails && projectDetails.welcome_text || 'Need Help'
   const position = projectDetails && projectDetails.position || 'br'
   const image = projectDetails && projectDetails.image ? 'https://assets.userscom.com/'+projectDetails.image : 'https://assets.userscom.com/project_avatar.jpg'
@@ -663,25 +663,7 @@ document.head.appendChild(linkElement);
   form.id = "userscom-form";
 
 
-  var iframe = document.createElement("iframe");
-    
-    console.log('userAttributes...', userAttributes)
-    iframe.src = `http://${projectDetails?.slug}.localhost:9000?iframe=active`;
-    iframe.onload = () => {
-        const safeUserAttributes = JSON.stringify(userAttributes);
-        iframe.contentWindow.postMessage(
-            { userAttributes: safeUserAttributes },
-            "http://contentdripss.localhost:9000" 
-        );
-    };
 
-
-    iframe.style.width = "100%";
-    iframe.style.height = "500px";
-    iframe.style.border = "none";
-
-    // Append iframe to form
-    form.appendChild(iframe);
 
 
   var header = document.createElement("div");
@@ -690,7 +672,7 @@ document.head.appendChild(linkElement);
 
   
 
-//   form.appendChild(header)
+  form.appendChild(header)
 
   
 
@@ -725,7 +707,7 @@ document.head.appendChild(linkElement);
   }
 
 
-    // form.appendChild(pasttickets)
+    form.appendChild(pasttickets)
 
   // Create textarea for message input
   var fieldsWrapper = document.createElement("div");
@@ -752,7 +734,7 @@ document.head.appendChild(linkElement);
   {
     formbody.appendChild(responseWrapper)
   }
-//   form.appendChild(formbody)
+  form.appendChild(formbody)
 
   var textarea = document.createElement("textarea");
   textarea.placeholder = "Type your message..";
@@ -853,9 +835,18 @@ document.head.appendChild(linkElement);
   successTextHeading.innerHTML = '<span><svg width="337" height="295" viewBox="0 0 337 295" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M336.118 0L247.748 220.955L192.509 165.732L203.548 198.863L177.771 221.019V167.098L304.099 37.0535L162.158 141.782L82.0001 121.532L336.118 0Z" fill="url(#paint0_linear_920_25)"/><path d="M145.046 211.253L78.0581 261.935" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><path d="M110.051 165L43.0636 215.682" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><path d="M114.39 198.082L17.4973 271.39" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><defs><linearGradient id="paint0_linear_920_25" x1="209.059" y1="0" x2="209.059" y2="221.019" gradientUnits="userSpaceOnUse"><stop stop-color="#278EFF"/><stop offset="1" stop-color="#ABD3FF" stop-opacity="0.63"/></linearGradient></defs></svg></span><span>Ticket Sent</span>';
   overlaySuccessDivText.appendChild(successTextHeading);
 
+  var successTextSubtitle = document.createElement("h6");
+  successTextSubtitle.id = "successTextSubtitle";
+  successTextSubtitle.textContent = "You will receive a response via email";
+  overlaySuccessDivText.appendChild(successTextSubtitle);
+
+  var successButton = document.createElement("a");
+  successButton.id = "successButton";
+  successButton.textContent = "Edit ticket";
+  overlaySuccessDivText.appendChild(successButton);
   
   overlaySuccessDiv.appendChild(overlaySuccessDivText);
-//   form.appendChild(overlaySuccessDiv);
+  form.appendChild(overlaySuccessDiv);
 
   // Append form to chat popup
   chatPopup.appendChild(form);
@@ -906,7 +897,20 @@ document.head.appendChild(linkElement);
       welcomeMsg.style.display="none"
     }
   });
+ 
+  // img.addEventListener("click", function () {
+  //   form.style.display = "none";
+  // });
 
+  var successButton = form.querySelector("#successButton");
+  successButton.addEventListener("click", function () {
+    var overlayDivSuccess = chatPopup.querySelector("#overlaySuccess");
+    overlayDivSuccess.style.display="none";
+    // form.querySelector("#overlaySuccess").style.display = "flex";
+  //  form.querySelector("#overlaySuccess").style.display = "none";
+
+    
+  });
 
  
   formbody.addEventListener('submit', (event) => {
@@ -991,6 +995,187 @@ document.head.appendChild(linkElement);
        
   });
 
+
+
+  const dropAreaDiv = form.querySelector("#drop-area");
+        const fileInput = form.querySelector("#fileInput");
+        
+        dropAreaDiv.addEventListener("dragenter", (e) => {
+            e.preventDefault();
+            dropAreaDiv.classList.add("dragging");
+        });
+
+        dropAreaDiv.addEventListener("dragover", (e) => {
+            e.preventDefault();
+        });
+
+        dropAreaDiv.addEventListener("dragleave", () => {
+            dropAreaDiv.classList.remove("dragging");
+        });
+
+        dropAreaDiv.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropAreaDiv.classList.remove("dragging");
+
+            const file = e.dataTransfer.files[0];
+            handleFile(file);
+        });
+
+        fileInput.addEventListener("change", (e) => {
+          console.log('file change')
+            const file = e.target.files[0];
+            handleFile(file);
+        });
+
+        form.addEventListener("paste", (e) => {
+            const items = e.clipboardData.items;
+
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf("image") !== -1) {
+                    const file = items[i].getAsFile();
+                    handleFile(file);
+                    break; 
+                }
+            }
+        });
+
+
+          
+       function updateTickets(form)
+       {
+       
+          const allTickets = JSON.parse(localStorage.getItem('allTickets')) || []
+          var pasttickets = form.querySelector('.past_tickets');
+
+         
+          pasttickets.innerHTML = "";
+          allTickets.map((ticket) => {
+            pasttickets.innerHTML+="<div class='ticket-item'><div class='custom-flex-container'><div class='custom-flex-items'><div class='custom-avatar-container'>"+ticket.name.charAt(0)+"</div><div class='custom-text-container'><p class='ticket_time'>"+formatDateTimeForTicket(ticket.date)+"</p><p class='custom-message-text'>"+ticket.message+"</p></div><div class='custom-text-container'></div></div><div><a class='viewticket_button' target='_blank' href='"+BASE_URL+"/ticket/conversation/"+ticket.ticketReference+"'>View</a></div></div></div>";
+          })
+        
+        
+       }
+  
+        function formatDateTimeForTicket (dateString) {
+          const currentDate = new Date();
+          let inputDate;
+          if (dateString && dateString != undefined) {
+            inputDate = new Date(dateString);
+          } else {
+            inputDate = new Date(currentDate);
+          }
+        
+          const options = {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          };
+        
+          if (
+            inputDate.getDate() === currentDate.getDate() &&
+            inputDate.getMonth() === currentDate.getMonth() &&
+            inputDate.getFullYear() === currentDate.getFullYear()
+          ) {
+            return `Today at ${inputDate.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+            })}`;
+          } else if (
+            inputDate.getDate() === currentDate.getDate() - 1 &&
+            inputDate.getMonth() === currentDate.getMonth() &&
+            inputDate.getFullYear() === currentDate.getFullYear()
+          ) {
+            return `Yesterday at ${inputDate.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+            })}`;
+          } else {
+            return inputDate.toLocaleDateString("en-US", options);
+          }
+        };
+
+        function handleFile(file) {
+          const fileExtension = file.name.split('.').pop();
+          uploadedFile = file
+          const existingExtensionDiv = form.querySelector("#extensionDiv");
+          if (existingExtensionDiv) {
+            existingExtensionDiv.remove();
+          }
+          
+          const previewImage = form.querySelector("#image-preview");
+          if (previewImage) {
+            previewImage.remove();
+          }
+            const reader = new FileReader();
+            if (file && file.type.startsWith("image/")) {
+                reader.onload = (event) => {
+                  const image = new Image();
+                  image.src = event.target.result;
+                  const imagePreview = document.createElement("div");
+                  imagePreview.id = "image-preview";
+                  const imgElement = document.createElement("img");
+                  imgElement.id = "imgElement";
+                  imgElement.src = event.target.result;
+
+                  const iconContainer = document.createElement('div');
+                  iconContainer.id = "iconContainer";
+                  iconContainer.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" width="13px" height="13px" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>';
+                  imagePreview.appendChild(iconContainer);
+                  imagePreview.appendChild(imgElement);
+                  dropArea.appendChild(imagePreview);
+
+                  iconContainer.addEventListener("click", (e) => {
+                    const fileInput = form.querySelector('#fileInput');
+                    if (fileInput) {
+                      fileInput.value = '';
+                    }
+                    const extensionDiv = form.querySelector('#extensionDiv');
+                    if (extensionDiv) {
+                      extensionDiv.innerHTML = '';
+                    }
+                    const imagePreview = form.querySelector('#image-preview');
+                    if(imagePreview)
+                    {
+                      imagePreview.remove();
+                    }
+                  });
+                };
+                reader.readAsDataURL(file);
+
+                
+
+            } else {
+                const extensionDiv = document.createElement('div');
+                extensionDiv.id = "extensionDiv";
+                const iconContainer = document.createElement('div');
+                iconContainer.id = "iconContainer";
+                const text = document.createElement('p');
+                text.textContent = fileExtension;
+                iconContainer.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" width="13px" height="13px" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>';
+                extensionDiv.appendChild(iconContainer);
+                extensionDiv.appendChild(text);
+                dropArea.appendChild(extensionDiv);
+                reader.readAsDataURL(file);
+
+                iconContainer.addEventListener("click", (e) => {
+                const fileInput = form.querySelector('#fileInput');
+                if (fileInput) {
+                  fileInput.value = '';
+                }
+                const extensionDiv = form.querySelector('#extensionDiv');
+                if (extensionDiv) {
+                  extensionDiv.innerHTML = '';
+                }
+                const imagePreview = form.querySelector('#imagePreview');
+                if(imagePreview)
+                {
+                  imagePreview.innerHTML = "";
+                }
+              });
+            }
+          }
 }
 
 const allTickets = JSON.parse(localStorage.getItem('allTickets')) || [];
@@ -1014,6 +1199,7 @@ if (reference) {
     .then(data => {
       localStorage.setItem("userscomPlan", data.plan);
       projectDetails = data;
+      console.log("projectDetails..", projectDetails)
       ChatBox();
     })
     .catch(error => {
