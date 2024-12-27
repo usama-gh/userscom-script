@@ -35,20 +35,6 @@ function ChatBox() {
   const image = projectDetails && projectDetails.image ? 'https://assets.userscom.com/'+projectDetails.image : 'https://assets.userscom.com/project_avatar.jpg'
   // Create styles
   const styles = `
-  
-
-
-.tabs {
-  display: flex;
-  position: relative;
-  background-color: #517eea1f;
-  // box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15);
-  padding: 2px;
-  border-radius: 99px;
-}
-.tabs * {
-  z-index: 2;
-}
 
 input[type=radio] {
   display: none;
@@ -135,9 +121,6 @@ input[id=radio-2]:checked ~ .glider {
 }
 
 @media (max-width: 700px) {
-  .tabs {
-    transform: scale(0.6);
-  }
 }
 
 
@@ -683,135 +666,6 @@ document.head.appendChild(linkElement);
     // Append iframe to form
     form.appendChild(iframe);
 
-
-  var header = document.createElement("div");
-  header.className="userscom_header"
-  header.innerHTML="<h3 class='userscom_heading'>Message us</h3>"
-
-  
-
-//   form.appendChild(header)
-
-
-
-    // form.appendChild(pasttickets)
-
-  // Create textarea for message input
-  var fieldsWrapper = document.createElement("div");
-  fieldsWrapper.className="field-wrapper"
-  const responseCount = responseData?.responses?.length
-  
-  var responseWrapper = document.createElement("div");
-  responseWrapper.className = "responseCount";
-  if(responseCount > 1){
-    responseWrapper.innerHTML = "<h5 class='responseCountHeading'>You've "+responseCount+" new replies</h5>";
-  }else{
-    responseWrapper.innerHTML = "<h5 class='responseCountHeading'>You've "+responseCount+" new reply</h5>";
-  }
- 
-
-  var counterInTab = document.createElement("span");
-  if(responseCount > 0)
-  {
-    counterInTab.innerHTML = "<span class='redCounter'>"+(responseCount||0)+"</span>"; 
-  }
-
-  var textarea = document.createElement("textarea");
-  textarea.placeholder = "Type your message..";
-  textarea.name = "message";
-  textarea.required = true;
-
-
-
-  var textAreaWrapper = document.createElement("div");
-  textAreaWrapper.className = "textarea-wrapper";
-
-  var nameInput = document.createElement("input");
-  nameInput.type = "text";
-  nameInput.placeholder = "Name";
-  nameInput.name = "name";
-
-  // Create an input field for the email
-  var emailInput = document.createElement("input");
-  emailInput.type = "text";
-  emailInput.placeholder = "Email";
-  emailInput.name = "email";
-  emailInput.required = true;
-  fieldsWrapper.appendChild(emailInput)
-  fieldsWrapper.appendChild(nameInput)
-  
-  textAreaWrapper.appendChild(textarea)
-
-  // Drop Area
-  const dropArea = document.createElement('div');
-  dropArea.id = "drop-area";
-
-  // Create the input element
-  const inputFile = document.createElement('input');
-  inputFile.type = 'file';
-  inputFile.id = 'fileInput';
-  inputFile.name = 'attachment';
-  inputFile.className = 'imagePicker';
-
-  const attachmentContainer = document.createElement('div');
-  attachmentContainer.className = 'attachmentContainer';
-  attachmentContainer.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
-    </svg>
-  `;
-
-  
-  // Append the input and label elements to the shadow root
-  attachmentContainer.appendChild(inputFile);
-  textAreaWrapper.appendChild(attachmentContainer);
-
-
-  // Create send button
-  var sendButton = document.createElement("button");
-  sendButton.type = "submit";
-  sendButton.className = "btn";
-  sendButton.textContent = "Submit";
-
-  var sendIcon=document.createElement("span")
-  sendIcon.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>'
-  sendButton.prepend(sendIcon)
-  var waterMark = document.createElement("div");
-  waterMark.className = "water-mark-container";
-
-  var waterMarkText = document.createElement("p");
-  waterMarkText.className = "water-mark-text";
-  waterMarkText.textContent = "Powered by Userscom";
-  waterMark.appendChild(waterMarkText);
-
-
-  // Append elements to form
-
-  
- 
-  // form.appendChild(closeButton);
-
-  const overlaySuccessDiv = document.createElement('div');
-  overlaySuccessDiv.id = 'overlaySuccess';
-  const overlaySuccessDivText = document.createElement('div');
-  overlaySuccessDivText.id = 'text';
-
-  overlaySuccessDiv.style.display="none";
- 
-
-
-
-
-
-  var successTextHeading = document.createElement("div");
-  successTextHeading.id="successTextHeading";
-  successTextHeading.innerHTML = '<span><svg width="337" height="295" viewBox="0 0 337 295" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M336.118 0L247.748 220.955L192.509 165.732L203.548 198.863L177.771 221.019V167.098L304.099 37.0535L162.158 141.782L82.0001 121.532L336.118 0Z" fill="url(#paint0_linear_920_25)"/><path d="M145.046 211.253L78.0581 261.935" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><path d="M110.051 165L43.0636 215.682" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><path d="M114.39 198.082L17.4973 271.39" stroke="#9FCDFF" stroke-width="4" stroke-dasharray="12 12"/><defs><linearGradient id="paint0_linear_920_25" x1="209.059" y1="0" x2="209.059" y2="221.019" gradientUnits="userSpaceOnUse"><stop stop-color="#278EFF"/><stop offset="1" stop-color="#ABD3FF" stop-opacity="0.63"/></linearGradient></defs></svg></span><span>Ticket Sent</span>';
-  overlaySuccessDivText.appendChild(successTextHeading);
-
-  
-  overlaySuccessDiv.appendChild(overlaySuccessDivText);
-//   form.appendChild(overlaySuccessDiv);
-
   // Append form to chat popup
   chatPopup.appendChild(form);
   chatPopup.appendChild(img)
@@ -823,33 +677,8 @@ document.head.appendChild(linkElement);
     }
 
    }, 7000);
-
-
- 
-
-  // Append chat button and chat popup to the body
-  // userscomRoot.appendChild(img);
   userscomRoot.appendChild(chatPopup);
-  // userscomRoot.appendChild(parentDiv);
-  // document.body.appendChild(img);
-  // document.body.appendChild(chatPopup);
 
-  // Add event listeners
-
-  header.addEventListener('change', function (event) {
-    if (event.target.type === 'radio' && event.target.name === 'tabs') {
-        var selectedTab = event.target.id;
-        if(selectedTab==="radio-2"){
-            form.querySelector('.userscom_body').style.display="none"
-            form.querySelector('.past_tickets').style.display="block"
-        }else{
-          // new ticket
-          form.querySelector('.userscom_body').style.display="block"
-          form.querySelector('.past_tickets').style.display="none"
-        }
-        console.log('Selected tab:', selectedTab);
-    }
-});
 
   img.addEventListener("click", function () {
     
@@ -863,21 +692,6 @@ document.head.appendChild(linkElement);
   });
 
 
-}
-
-const allTickets = JSON.parse(localStorage.getItem('allTickets')) || [];
-const ticketIds = allTickets.filter(ticket => ticket.id !== undefined).map(i => i.id);
-if(reference && ticketIds && ticketIds?.length > 0)
-{
-  fetch(BASE_URL+"/api/unseen-tickets-count/"+reference+"/"+ticketIds, { method: 'GET' }).then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    responseData = data
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
 }
 
 if (reference) {
