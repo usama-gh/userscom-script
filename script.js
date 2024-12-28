@@ -4,12 +4,16 @@ let projectDetails;
 let responseData;
 
 const BASE_URL = "http://127.0.0.1:9000";
-IFRAME_URL = "localhost:9000?iframe=active";
+const IFRAME_URL = "localhost:9000?iframe=active";
 // const BASE_URL = "https://app.userscom.com";
 let userAttributes = {};
 window.userscomMessageQueue = [];
 let chatIframe = null;
 
+  // Create form
+  var form = document.createElement("div");
+  form.className = "form-container";
+var iframe = document.createElement("iframe");
 const sendMessageToIframe = (attributes) => {
   if (chatIframe && projectDetails?.slug) {
     const message = {
@@ -21,7 +25,7 @@ const sendMessageToIframe = (attributes) => {
     // Send message to iframe without checking route
     chatIframe.contentWindow.postMessage(
       message,
-      `http://${projectDetails?.slug}.localhost:9000`
+      `http://${projectDetails?.slug}.${IFRAME_URL}`
     );
     console.log('Sending message to iframe:', message);
   }
@@ -41,13 +45,23 @@ window.addEventListener("message", function(event) {
   if (event.data === "updateUserAttributes") {
     sendMessageToIframe(userAttributes)
   }
+  if (event.data === "increaseWidth") {
+    const width = "700px";
+    iframe.style.width = width;
+    form.style.setProperty("width", width, "important");
+    form.style.setProperty("max-width", width, "important");
+    
+    // iframe.style.height = routeDimensions[route].height;
+  }
+  if(event.data === "resetWidth"){
+    const width = "400px";
+    iframe.style.width = width;
+    form.style.setProperty("width", width, "important");
+    form.style.setProperty("max-width", width, "important");
+  }
 });
 
-// document.addEventListener('updateUserAttributes', (event) => {
-//   userAttributes = event.detail;
-//   sendMessageToIframe(userAttributes)
-//   console.log('userAttributes...', userAttributes)
-// });
+
 const userscom = {
   user: {
     set(options) {
@@ -678,13 +692,9 @@ document.head.appendChild(linkElement);
     welcomeMsg.className = "welcomeMsg";
   }
 
-  // Create form
-  var form = document.createElement("div");
-  form.className = "form-container";
   form.id = "userscom-form";
 
 
-  var iframe = document.createElement("iframe");
     
     console.log('userAttributes...', userAttributes)
     iframe.src = `http://${projectDetails?.slug}.${IFRAME_URL}`;
