@@ -4,12 +4,50 @@ let projectDetails;
 let responseData;
 
 const BASE_URL = "http://127.0.0.1:9000";
+IFRAME_URL = "localhost:9000?iframe=active";
 // const BASE_URL = "https://app.userscom.com";
 let userAttributes = {};
+window.userscomMessageQueue = [];
+let chatIframe = null;
+
+const sendMessageToIframe = (attributes) => {
+  if (chatIframe && projectDetails?.slug) {
+    const message = {
+      type: 'userAttributes',
+      userAttributes: JSON.stringify(attributes),
+      timestamp: Date.now()
+    };
+
+    // Send message to iframe without checking route
+    chatIframe.contentWindow.postMessage(
+      message,
+      `http://${projectDetails?.slug}.localhost:9000`
+    );
+    console.log('Sending message to iframe:', message);
+  }
+};
+
+// Keep track of messages locally
+let pendingMessages = [];
+
 document.addEventListener('updateUserAttributes', (event) => {
   userAttributes = event.detail;
-  console.log('userAttributes...', userAttributes)
+  console.log('userAttributes updated:', userAttributes);
+  pendingMessages.push(userAttributes);
+  sendMessageToIframe(userAttributes);
 });
+
+window.addEventListener("message", function(event) {
+  if (event.data === "updateUserAttributes") {
+    sendMessageToIframe(userAttributes)
+  }
+});
+
+// document.addEventListener('updateUserAttributes', (event) => {
+//   userAttributes = event.detail;
+//   sendMessageToIframe(userAttributes)
+//   console.log('userAttributes...', userAttributes)
+// });
 const userscom = {
   user: {
     set(options) {
@@ -649,14 +687,25 @@ document.head.appendChild(linkElement);
   var iframe = document.createElement("iframe");
     
     console.log('userAttributes...', userAttributes)
-    iframe.src = `http://${projectDetails?.slug}.localhost:9000?iframe=active`;
-    iframe.onload = () => {
-        const safeUserAttributes = JSON.stringify(userAttributes);
-        iframe.contentWindow.postMessage(
-            { userAttributes: safeUserAttributes },
-            "http://contentdripss.localhost:9000" 
-        );
-    };
+    iframe.src = `http://${projectDetails?.slug}.${IFRAME_URL}`;
+    // iframe.onload = () => {
+    //     const safeUserAttributes = JSON.stringify(userAttributes);
+    //     iframe.contentWindow.postMessage(
+    //         { userAttributes: safeUserAttributes },
+    //         `http://${projectDetails?.slug}.localhost:9000?iframe=active`
+    //     );
+    // };
+
+  chatIframe = iframe;
+  iframe.onload = () => {
+    // Send any pending messages
+    if (pendingMessages.length > 0) {
+      pendingMessages.forEach(attributes => {
+        sendMessageToIframe(attributes);
+      });
+      pendingMessages = []; // Clear the queue after sending
+    }
+  };
 
 
     iframe.style.width = "100%";
